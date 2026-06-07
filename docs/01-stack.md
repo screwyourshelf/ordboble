@@ -2,28 +2,28 @@
 
 ## Frontend
 
-* Svelte 5
-* Vite
-* TypeScript
-* Tailwind CSS
+- Svelte 5
+- Vite
+- TypeScript
+- Tailwind CSS
 
 ## Backend (planned)
 
-* Cloudflare Workers
-* Cloudflare D1
-* Server-Sent Events (SSE)
+- Cloudflare Workers
+- Cloudflare D1
+- Server-Sent Events (SSE)
 
 ## Package Management
 
-* pnpm
+- pnpm
 
 ## Repository Structure
 
-* monorepo
+- monorepo
 
 ## Current Structure
 
-```text id="3s4jbt"
+```text
 apps/
   web/
 
@@ -32,7 +32,7 @@ docs/
 
 ## Possible Future Structure
 
-```text id="ywslj6"
+```text
 apps/
   web/
   worker/
