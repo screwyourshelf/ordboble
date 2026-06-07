@@ -1,7 +1,7 @@
 <script lang="ts">
-  // Iteration 010: Temporarily showing PresentationModeScreen prototype
-  import PresentationModeScreen from './lib/components/presentation/PresentationModeScreen.svelte'
+  // Iteration 011: Temporarily showing EditorScreen prototype
+  import EditorScreen from './lib/components/editor/EditorScreen.svelte'
 </script>
 
-<PresentationModeScreen />
+<EditorScreen />
 
