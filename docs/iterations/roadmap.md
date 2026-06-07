@@ -64,7 +64,7 @@ Optional:
   - Session read API
   - Word submission API
 
-- [ ] 015 — Realtime foundation
+- [x] 015 — Realtime foundation
   - SSE endpoint
   - Realtime frontend integration
   - Live presentation updates

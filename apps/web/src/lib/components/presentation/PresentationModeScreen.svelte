@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte'
   import GlowOrb from '../ui/GlowOrb.svelte'
   import WordCluster from '../word-cloud/WordCluster.svelte'
   import FloatingParticle from '../word-cloud/FloatingParticle.svelte'
@@ -6,6 +7,40 @@
   import PresentationJoinCard from './PresentationJoinCard.svelte'
   import { presentationComposition } from '../../word-cloud/compositions'
   import { mockSession as session } from '../../mocks/session'
+  import { subscribeToCloudEvents } from '../../services/realtime'
+  import type { WordEntry } from '../../types/word-cloud'
+  import env from '../../config/env'
+
+  // Start with static composition; append live words on top
+  let liveWords: WordEntry[] = $state([...presentationComposition.words])
+
+  // Colours cycled for incoming live words
+  const liveColors = ['accent', 'warm', 'success', 'primary', 'soft'] as const
+  let colorIndex = 0
+
+  const unsubscribe = env.apiBaseUrl
+    ? subscribeToCloudEvents(session.id, {
+        onWordAdded(payload) {
+          const color = liveColors[colorIndex % liveColors.length]
+          colorIndex++
+          liveWords = [
+            ...liveWords,
+            {
+              word: payload.word,
+              size: 'md',
+              variant: 'solid',
+              color,
+              depth: 1,
+              x: 10 + Math.random() * 80,
+              y: 10 + Math.random() * 80,
+              delay: 0,
+            },
+          ]
+        },
+      })
+    : () => { /* static prototype mode */ }
+
+  onDestroy(unsubscribe)
 </script>
 
 <!--
@@ -57,7 +92,7 @@
     aria-label="Ordsky"
   >
     <WordCluster
-      words={presentationComposition.words}
+      words={liveWords}
       class="absolute inset-0"
     />
 

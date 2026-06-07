@@ -1,6 +1,7 @@
 import type { Env } from './types.js';
 import { createCloud, getCloud } from './routes/clouds.js';
 import { submitWords, getWords } from './routes/words.js';
+import { cloudEvents } from './routes/events.js';
 import { json, notFound } from './lib/response.js';
 
 export default {
@@ -35,6 +36,14 @@ export default {
       const cloudId = wordsMatch[1];
       if (method === 'POST') return submitWords(cloudId, request, env);
       if (method === 'GET') return getWords(cloudId, env);
+      return notFound();
+    }
+
+    // GET /api/clouds/:id/events
+    const eventsMatch = pathname.match(/^\/api\/clouds\/([^/]+)\/events$/);
+    if (eventsMatch) {
+      const cloudId = eventsMatch[1];
+      if (method === 'GET') return cloudEvents(cloudId, env);
       return notFound();
     }
 
