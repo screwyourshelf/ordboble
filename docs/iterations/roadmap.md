@@ -50,61 +50,70 @@ Optional:
 # Cloudflare & Application Foundation
 
 - [x] 013 — Cloudflare Pages deployment
-- [ ] 013.1 — Frontend environment setup
-- [ ] 013.2 — Cloudflare Worker foundation
+- [x] 013.1 — Frontend environment setup
+- [x] 013.2 — Cloudflare Worker foundation
 - [ ] 013.3 — Shared API contract structure
 
 ---
 
 # Backend & Realtime
 
-- [ ] 014 — D1 data model and migrations
-- [ ] 014.1 — Cloud creation API
-- [ ] 014.2 — Word submission API
-- [ ] 014.3 — Session read API
-- [ ] 014.4 — SSE realtime foundation
-- [ ] 014.5 — Realtime frontend integration
+- [ ] 014 — Core backend foundation
+  - D1 schema and migrations
+  - Cloud/session creation API
+  - Session read API
+  - Word submission API
+
+- [ ] 015 — Realtime foundation
+  - SSE endpoint
+  - Realtime frontend integration
+  - Live presentation updates
 
 Optional:
-- [ ] 014.6 — Presence/participant tracking
-- [ ] 014.7 — Rate limiting and abuse protection
+- [ ] 015.1 — Presence and participant tracking
+- [ ] 015.2 — Rate limiting and abuse protection
 
 ---
 
 # Product Features
 
-- [ ] 015 — QR sharing flow
-- [ ] 015.1 — Export implementation
-- [ ] 015.2 — Theme persistence
-- [ ] 015.3 — Shape rendering system
-- [ ] 015.4 — Presentation controls
-- [ ] 015.5 — Session lifecycle management
+- [ ] 016 — Sharing and export features
+  - QR sharing flow
+  - Export implementation
+
+- [ ] 017 — Session customization
+  - Theme persistence
+  - Shape rendering system
+  - Presentation controls
+  - Session lifecycle management
 
 Optional:
-- [ ] 015.6 — Join lobby/waiting room
-- [ ] 015.7 — Multi-question sessions
-- [ ] 015.8 — Audience reactions
+- [ ] 017.1 — Join lobby/waiting room
+- [ ] 017.2 — Multi-question sessions
+- [ ] 017.3 — Audience reactions
 
 ---
 
 # Product Polish
 
-- [ ] 016 — Mobile polish
-- [ ] 016.1 — Presentation polish
-- [ ] 016.2 — Accessibility pass
-- [ ] 016.3 — Performance optimization
-- [ ] 016.4 — Motion polish
-- [ ] 016.5 — Empty/loading/error states
+- [ ] 018 — Product polish
+  - Mobile polish
+  - Presentation polish
+  - Accessibility pass
+  - Performance optimization
+  - Motion polish
+  - Empty/loading/error states
 
 ---
 
 # Beta Readiness
 
-- [ ] 017 — Error handling and resilience
-- [ ] 017.1 — Analytics/events foundation
-- [ ] 017.2 — Security review
-- [ ] 017.3 — Beta deployment checklist
-- [ ] 017.4 — Beta readiness
+- [ ] 019 — Beta hardening
+  - Error handling and resilience
+  - Analytics/events foundation
+  - Security review
+  - Beta deployment checklist
+  - Beta readiness
 
 ---
 
