@@ -1,12 +1,6 @@
 <script lang="ts">
   import type { EditorTheme } from '../../types/editor'
-
-  interface ThemeOption {
-    id: EditorTheme
-    label: string
-    swatch: string
-    ring: string
-  }
+  import { themes } from '../../design/themes'
 
   interface Props {
     selected: EditorTheme
@@ -14,33 +8,6 @@
   }
 
   let { selected, onSelect }: Props = $props()
-
-  const themes: ThemeOption[] = [
-    {
-      id: 'playful',
-      label: 'Playful',
-      swatch: 'linear-gradient(135deg, #7c3cff, #ff4fa3)',
-      ring: '#7c3cff',
-    },
-    {
-      id: 'calm',
-      label: 'Calm',
-      swatch: 'linear-gradient(135deg, #3b82f6, #7c3cff)',
-      ring: '#3b82f6',
-    },
-    {
-      id: 'dark',
-      label: 'Dark',
-      swatch: 'linear-gradient(135deg, #1a1a2e, #16213e)',
-      ring: '#ffffff',
-    },
-    {
-      id: 'celebration',
-      label: 'Fест',
-      swatch: 'linear-gradient(135deg, #ff7a2f, #ff4fa3)',
-      ring: '#ff7a2f',
-    },
-  ]
 </script>
 
 <div class="flex flex-col gap-3">

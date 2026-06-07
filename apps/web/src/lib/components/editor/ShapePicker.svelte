@@ -1,11 +1,6 @@
 <script lang="ts">
   import type { EditorShape } from '../../types/editor'
-
-  interface ShapeOption {
-    id: EditorShape
-    label: string
-    icon: string
-  }
+  import { shapes } from '../../design/shapes'
 
   interface Props {
     selected: EditorShape
@@ -13,13 +8,6 @@
   }
 
   let { selected, onSelect }: Props = $props()
-
-  const shapes: ShapeOption[] = [
-    { id: 'freeform',    label: 'Fritt',    icon: '✦' },
-    { id: 'circle',      label: 'Sirkel',   icon: '◉' },
-    { id: 'heart',       label: 'Hjerte',   icon: '♡' },
-    { id: 'star',        label: 'Stjerne',  icon: '✦' },
-  ]
 </script>
 
 <div class="flex flex-col gap-3">

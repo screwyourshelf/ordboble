@@ -4,6 +4,8 @@
   import FloatingParticle from '../word-cloud/FloatingParticle.svelte'
   import type { EditorTheme, EditorShape } from '../../types/editor'
   import { heroComposition } from '../../word-cloud/compositions'
+  import { getTheme } from '../../design/themes'
+  import { getShape } from '../../design/shapes'
 
   interface Props {
     theme: EditorTheme
@@ -12,27 +14,8 @@
 
   let { theme, shape }: Props = $props()
 
-  // Theme → preview background tint (visual only, no recomposition)
-  const themeBg: Record<EditorTheme, string> = {
-    playful:     'radial-gradient(ellipse 90% 80% at 55% 50%, rgba(124,60,255,0.22) 0%, rgba(255,79,163,0.12) 50%, #070816 80%)',
-    calm:        'radial-gradient(ellipse 90% 80% at 50% 50%, rgba(59,130,246,0.20) 0%, rgba(124,60,255,0.10) 55%, #060c1a 80%)',
-    dark:        'radial-gradient(ellipse 80% 70% at 50% 50%, rgba(30,30,50,0.90) 0%, #04040c 70%)',
-    celebration: 'radial-gradient(ellipse 90% 80% at 45% 50%, rgba(255,122,47,0.22) 0%, rgba(255,79,163,0.14) 50%, #0f0610 80%)',
-  }
-
-  const themeGlowColor: Record<EditorTheme, 'primary' | 'accent' | 'warm'> = {
-    playful:     'primary',
-    calm:        'primary',
-    dark:        'primary',
-    celebration: 'warm',
-  }
-
-  const shapeLabel: Record<EditorShape, string> = {
-    freeform: 'Fri form',
-    circle:   'Sirkel',
-    heart:    'Hjerte',
-    star:     'Stjerne',
-  }
+  const activeTheme = $derived(getTheme(theme))
+  const activeShape = $derived(getShape(shape))
 </script>
 
 <!--
@@ -41,12 +24,12 @@
 -->
 <div
   class="relative w-full h-full overflow-hidden rounded-[2rem] border border-white/10"
-  style="background: {themeBg[theme]}"
+  style="background: {activeTheme.previewBg}"
 >
   <!-- Atmospheric glow -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
     <div class="absolute -top-16 right-[-8%] opacity-50">
-      <GlowOrb size="md" color={themeGlowColor[theme]} />
+      <GlowOrb size="md" color={activeTheme.glowColor} />
     </div>
     <div class="absolute -bottom-10 left-[5%] opacity-40">
       <GlowOrb size="sm" color="accent" />
@@ -75,7 +58,7 @@
         bg-black/40 backdrop-blur-sm border border-white/12
         text-xs font-bold text-text-soft"
     >
-      ✦ {shapeLabel[shape]}
+      {activeShape.icon} {activeShape.label}
     </span>
   </div>
 </div>

@@ -1,6 +1,5 @@
-export type EditorTheme = 'playful' | 'calm' | 'dark' | 'celebration'
-
-export type EditorShape = 'freeform' | 'circle' | 'heart' | 'star'
+export type { ThemeId as EditorTheme } from './theme'
+export type { ShapeId as EditorShape } from './shape'
 
 export type EditorDensity = 'compact' | 'balanced' | 'airy'
 
