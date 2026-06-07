@@ -64,14 +64,18 @@ Optional:
   - Session read API
   - Word submission API
 
-- [x] 015 — Realtime foundation
-  - SSE endpoint
-  - Realtime frontend integration
-  - Live presentation updates
+- [>] 015.1 — Connect contributor flow to backend
+  - Submit real words from contributor screen
+  - Use clientId
+  - Handle API errors
+  - Keep success state
+
+- [ ] 015.2 — End-to-end live loop verification
+  - Contributor submit → D1 → SSE → Presentation update
 
 Optional:
-- [ ] 015.1 — Presence and participant tracking
-- [ ] 015.2 — Rate limiting and abuse protection
+- [ ] 015.3 — Presence and participant tracking
+- [ ] 015.4 — Rate limiting and abuse protection
 
 ---
 

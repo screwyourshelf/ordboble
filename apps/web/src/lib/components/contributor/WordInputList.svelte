@@ -5,9 +5,10 @@
 
   interface Props {
     onSubmit: (words: string[]) => void
+    loading?: boolean
   }
 
-  let { onSubmit }: Props = $props()
+  let { onSubmit, loading = false }: Props = $props()
 
   const MAX_WORDS = 3
 
@@ -52,7 +53,7 @@
     </div>
   </Card>
 
-  <Button variant="primary" size="lg" disabled={!canSubmit} onclick={handleSubmit}>
-    Send inn ordene mine
+  <Button variant="primary" size="lg" disabled={!canSubmit || loading} onclick={handleSubmit}>
+    {loading ? 'Sender inn…' : 'Send inn ordene mine'}
   </Button>
 </div>

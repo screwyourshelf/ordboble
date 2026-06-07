@@ -5,18 +5,33 @@
   import WordInputList from './WordInputList.svelte'
   import SuccessConfirmation from './SuccessConfirmation.svelte'
   import { mockSession as session } from '../../mocks/session'
+  import { submitWords } from '../../services/word-api'
 
   let submitted = $state(false)
   let submittedWords = $state<string[]>([])
+  let loading = $state(false)
+  let error = $state<string | null>(null)
 
-  function handleSubmit(words: string[]) {
-    submittedWords = words
-    submitted = true
+  async function handleSubmit(words: string[]) {
+    loading = true
+    error = null
+
+    const result = await submitWords(session.id, words)
+
+    loading = false
+
+    if (result.ok) {
+      submittedWords = result.accepted
+      submitted = true
+    } else {
+      error = result.error
+    }
   }
 
   function handleReset() {
     submittedWords = []
     submitted = false
+    error = null
   }
 </script>
 
@@ -58,7 +73,10 @@
     {#if submitted}
       <SuccessConfirmation words={submittedWords} onReset={handleReset} />
     {:else}
-      <WordInputList onSubmit={handleSubmit} />
+      {#if error}
+        <p class="text-sm text-center text-red-400 px-2">{error}</p>
+      {/if}
+      <WordInputList onSubmit={handleSubmit} loading={loading} />
     {/if}
 
   </div>
