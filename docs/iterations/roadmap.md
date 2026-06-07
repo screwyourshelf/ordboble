@@ -14,8 +14,8 @@
 - [x] 000 — Project foundation
 - [x] 001 — Setup Tailwind and clean Vite
 - [x] 002 — Establish design tokens and base UI primitives
-- [~] 003 — Layout foundation
-- [ ] 004 — Typography and motion foundation
+- [x] 003 — Layout foundation
+- [x] 004 — Typography and motion foundation
 
 ---
 

@@ -3,6 +3,12 @@
   import Card from './lib/components/ui/Card.svelte'
   import Badge from './lib/components/ui/Badge.svelte'
   import TextInput from './lib/components/ui/TextInput.svelte'
+  import DisplayTitle from './lib/components/ui/DisplayTitle.svelte'
+  import SectionTitle from './lib/components/ui/SectionTitle.svelte'
+  import BodyText from './lib/components/ui/BodyText.svelte'
+  import Eyebrow from './lib/components/ui/Eyebrow.svelte'
+  import GradientText from './lib/components/ui/GradientText.svelte'
+  import GlowOrb from './lib/components/ui/GlowOrb.svelte'
 
   import PageShell from './lib/components/layout/PageShell.svelte'
   import Container from './lib/components/layout/Container.svelte'
@@ -152,6 +158,126 @@
             </div>
           </Card>
         </div>
+
+      </div>
+    </Container>
+  </Section>
+
+  <!-- ── Typography Preview ── -->
+  <Section spacing="default">
+    <Container variant="default">
+      <div class="space-y-10">
+
+        <header>
+          <Eyebrow>Typography Foundation</Eyebrow>
+        </header>
+
+        <!-- DisplayTitle -->
+        <Card>
+          <div class="p-8 space-y-6">
+            <Eyebrow>DisplayTitle</Eyebrow>
+            <div class="space-y-4">
+              <DisplayTitle>The future of words</DisplayTitle>
+              <DisplayTitle gradient>
+                <GradientText variant="playful">Ordboble</GradientText>
+              </DisplayTitle>
+              <DisplayTitle centered>Centered Title</DisplayTitle>
+            </div>
+          </div>
+        </Card>
+
+        <!-- SectionTitle + Eyebrow -->
+        <Card>
+          <div class="p-8 space-y-6">
+            <Eyebrow>SectionTitle + Eyebrow</Eyebrow>
+            <div class="space-y-4">
+              <div class="space-y-1">
+                <Eyebrow>Section label</Eyebrow>
+                <SectionTitle>Create your cloud</SectionTitle>
+              </div>
+              <div class="space-y-1">
+                <Eyebrow accent>✨ New</Eyebrow>
+                <SectionTitle compact>Compact section title</SectionTitle>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <!-- BodyText -->
+        <Card>
+          <div class="p-8 space-y-4">
+            <Eyebrow>BodyText</Eyebrow>
+            <BodyText>
+              Share a link, collect words from your audience, and watch the cloud grow in real time.
+              Perfect for workshops, classrooms and presentations.
+            </BodyText>
+            <BodyText muted>
+              Muted variant — used for secondary descriptions, helper text and supporting content.
+            </BodyText>
+          </div>
+        </Card>
+
+        <!-- GradientText -->
+        <Card>
+          <div class="p-8 space-y-4">
+            <Eyebrow>GradientText</Eyebrow>
+            <p class="text-4xl font-black tracking-tight">
+              <GradientText variant="playful">Playful gradient</GradientText>
+            </p>
+            <p class="text-4xl font-black tracking-tight">
+              <GradientText variant="calm">Calm gradient</GradientText>
+            </p>
+          </div>
+        </Card>
+
+      </div>
+    </Container>
+  </Section>
+
+  <!-- ── Motion Preview ── -->
+  <Section spacing="default">
+    <Container variant="default">
+      <div class="space-y-10">
+
+        <header>
+          <Eyebrow>Motion Foundation</Eyebrow>
+        </header>
+
+        <!-- GlowOrbs + float-subtle -->
+        <Card elevated>
+          <div class="p-8 space-y-4">
+            <Eyebrow>GlowOrb — float-subtle</Eyebrow>
+            <div class="relative flex items-center justify-center gap-8 h-48 overflow-hidden rounded-2xl
+              [background:radial-gradient(circle_at_50%_50%,rgba(17,20,42,0.6),transparent)]">
+              <GlowOrb size="md" color="primary" />
+              <GlowOrb size="sm" color="accent" />
+              <GlowOrb size="sm" color="warm" />
+            </div>
+            <BodyText muted>Decorative orbs with float-subtle animation. Used as ambient background elements.</BodyText>
+          </div>
+        </Card>
+
+        <!-- Motion utilities -->
+        <Card>
+          <div class="p-8 space-y-4">
+            <Eyebrow>Motion utilities</Eyebrow>
+            <div class="flex flex-wrap gap-4">
+              <div class="px-6 py-3 rounded-xl bg-white/8 border border-border text-text-soft text-sm font-medium hover-lift cursor-pointer select-none">
+                hover-lift
+              </div>
+              <div class="px-6 py-3 rounded-xl bg-white/8 border border-border text-text-soft text-sm font-medium hover-glow cursor-pointer select-none">
+                hover-glow
+              </div>
+              <div class="px-6 py-3 rounded-xl bg-white/8 border border-border text-text-soft text-sm font-medium transition-soft hover:bg-white/14 cursor-pointer select-none">
+                transition-soft
+              </div>
+              <div class="px-6 py-3 rounded-xl bg-white/8 border border-border text-text-soft text-sm font-medium animate-fade-in cursor-default select-none">
+                animate-fade-in
+              </div>
+            </div>
+            <BodyText muted>Hover the tiles to preview motion utilities.</BodyText>
+          </div>
+        </Card>
 
       </div>
     </Container>
