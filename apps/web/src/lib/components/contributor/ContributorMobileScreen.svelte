@@ -8,7 +8,14 @@
   import { submitWords } from '../../services/word-api'
   import env from '../../config/env'
 
-  const cloudId = env.cloudId || session.id
+  interface Props {
+    sessionId?: string
+  }
+
+  let { sessionId }: Props = $props()
+
+  // Priority: route session id → env override → mock fallback
+  const cloudId = sessionId || env.cloudId || session.id
 
   let submitted = $state(false)
   let submittedWords = $state<string[]>([])

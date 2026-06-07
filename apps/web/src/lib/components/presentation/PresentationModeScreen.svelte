@@ -11,7 +11,14 @@
   import type { WordEntry } from '../../types/word-cloud'
   import env from '../../config/env'
 
-  const cloudId = env.cloudId || session.id
+  interface Props {
+    sessionId?: string
+  }
+
+  let { sessionId }: Props = $props()
+
+  // Priority: route session id → env override → mock fallback
+  const cloudId = sessionId || env.cloudId || session.id
 
   // Start with static composition; append live words on top
   let liveWords: WordEntry[] = $state([...presentationComposition.words])

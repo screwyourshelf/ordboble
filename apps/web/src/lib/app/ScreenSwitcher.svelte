@@ -8,19 +8,20 @@
 
   interface Props {
     screen: ScreenId
+    sessionId?: string | null
   }
 
-  let { screen }: Props = $props()
+  let { screen, sessionId = null }: Props = $props()
 </script>
 
 {#if screen === 'landing'}
   <WordCloudHero />
 {:else if screen === 'contributor'}
-  <ContributorMobileScreen />
+  <ContributorMobileScreen sessionId={sessionId ?? undefined} />
 {:else if screen === 'share'}
-  <ShareScreen />
+  <ShareScreen sessionId={sessionId ?? undefined} />
 {:else if screen === 'presentation'}
-  <PresentationModeScreen />
+  <PresentationModeScreen sessionId={sessionId ?? undefined} />
 {:else if screen === 'editor'}
-  <EditorScreen />
+  <EditorScreen sessionId={sessionId ?? undefined} />
 {/if}

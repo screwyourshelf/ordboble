@@ -11,6 +11,12 @@
   import type { EditorState, EditorTheme, EditorShape, EditorStyle } from '../../types/editor'
   import { mockSession } from '../../mocks/session'
 
+  interface Props {
+    sessionId?: string
+  }
+
+  let { sessionId }: Props = $props()
+
   // All editor state lives here — no stores, no persistence
   let state: EditorState = $state({
     theme: 'playful',

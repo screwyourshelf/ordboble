@@ -10,6 +10,12 @@
   import JoinLinkCard from './JoinLinkCard.svelte'
   import PresentationLaunchCard from './PresentationLaunchCard.svelte'
   import { mockSession as session } from '../../mocks/session'
+
+  interface Props {
+    sessionId?: string
+  }
+
+  let { sessionId }: Props = $props()
 </script>
 
 <PageShell class="relative overflow-hidden">
