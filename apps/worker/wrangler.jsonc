@@ -2,5 +2,13 @@
   // Ordboble Cloudflare Worker
   "name": "ordboble-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2024-11-01"
+  "compatibility_date": "2024-11-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ordboble-db",
+      "database_id": "c0c25458-fea4-455d-9416-baacde83d326",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

@@ -1,9 +1,9 @@
-// TODO: Expand when session API is implemented.
-
 export type CreateSessionRequest = {
   title: string;
   prompt?: string;
   language?: string;
+  maxWordsPerClient?: number;
+  liveEnabled?: boolean;
 };
 
 export type SessionResponse = {
@@ -11,6 +11,9 @@ export type SessionResponse = {
   title: string;
   prompt?: string;
   language: string;
+  joinCode: string;
+  maxWordsPerClient: number;
+  liveEnabled: boolean;
   createdAt: string;
   expiresAt?: string;
 };

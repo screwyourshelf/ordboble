@@ -52,13 +52,13 @@ Optional:
 - [x] 013 — Cloudflare Pages deployment
 - [x] 013.1 — Frontend environment setup
 - [x] 013.2 — Cloudflare Worker foundation
-- [ ] 013.3 — Shared API contract structure
+- [x] 013.3 — Shared API contract structure
 
 ---
 
 # Backend & Realtime
 
-- [ ] 014 — Core backend foundation
+- [x] 014 — Core backend foundation
   - D1 schema and migrations
   - Cloud/session creation API
   - Session read API

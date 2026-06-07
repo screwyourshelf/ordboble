@@ -1,12 +1,13 @@
-// TODO: Expand when word submission API is implemented.
-
 export type SubmitWordsRequest = {
+  clientId: string;
   words: string[];
 };
 
 export type SubmittedWordResponse = {
   id: string;
-  sessionId: string;
+  cloudId: string;
+  clientId: string;
   word: string;
+  normalizedWord: string;
   createdAt: string;
 };
