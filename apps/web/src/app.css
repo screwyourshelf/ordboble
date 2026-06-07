@@ -61,8 +61,8 @@
 }
 
 @keyframes word-pop-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: translateY(6px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── Motion utilities ── */
@@ -96,7 +96,33 @@
   }
 
   .word-pop-in {
-    animation: word-pop-in 0.5s ease-out both;
+    animation: word-pop-in 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
   }
+}
+
+/* ── Word token: rotation + hover via CSS custom property ── */
+.word-token {
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 0.18s ease-out;
+}
+.word-token:hover {
+  transform: rotate(var(--rotation, 0deg)) scale(1.05);
+}
+
+.word-token-hero {
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 0.2s ease-out;
+}
+.word-token-hero:hover {
+  transform: rotate(var(--rotation, 0deg)) scale(1.07);
+}
+
+/* ── Glow utilities (supports --glow-color with currentColor fallback) ── */
+.glow-soft   { filter: drop-shadow(0 0 8px  var(--glow-color, currentColor)); }
+.glow-medium { filter: drop-shadow(0 0 16px var(--glow-color, currentColor)); }
+.glow-strong {
+  filter:
+    drop-shadow(0 0 22px var(--glow-color, currentColor))
+    drop-shadow(0 0 44px var(--glow-color, currentColor));
 }
 
