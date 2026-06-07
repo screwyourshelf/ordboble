@@ -1,5 +1,1 @@
-export interface ContributorSession {
-  title: string
-  prompt: string
-  helperText: string
-}
+export type { Session as ContributorSession } from './session'

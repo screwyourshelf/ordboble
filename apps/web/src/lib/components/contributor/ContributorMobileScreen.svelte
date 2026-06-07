@@ -4,13 +4,7 @@
   import GradientText from '../ui/GradientText.svelte'
   import WordInputList from './WordInputList.svelte'
   import SuccessConfirmation from './SuccessConfirmation.svelte'
-  import type { ContributorSession } from '../../types/contributor'
-
-  const session: ContributorSession = {
-    title: 'Team workshop',
-    prompt: 'Hva forbinder du med godt samarbeid?',
-    helperText: 'Skriv ett ord om gangen — du kan legge til opptil 3 ord.',
-  }
+  import { mockSession as session } from '../../mocks/session'
 
   let submitted = $state(false)
   let submittedWords = $state<string[]>([])

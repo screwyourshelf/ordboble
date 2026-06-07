@@ -9,16 +9,7 @@
   import QRCodePlaceholder from './QRCodePlaceholder.svelte'
   import JoinLinkCard from './JoinLinkCard.svelte'
   import PresentationLaunchCard from './PresentationLaunchCard.svelte'
-  import type { ShareSession } from '../../types/share'
-
-  // Fake static session data — no backend
-  const session: ShareSession = {
-    title: 'Team workshop',
-    prompt: 'Hva forbinder du med godt samarbeid?',
-    joinCode: 'TEAM25',
-    joinUrl: 'https://ordboble.app/join/TEAM25',
-    participantCount: 12,
-  }
+  import { mockSession as session } from '../../mocks/session'
 </script>
 
 <PageShell class="relative overflow-hidden">

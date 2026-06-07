@@ -5,16 +5,7 @@
   import PresentationChrome from './PresentationChrome.svelte'
   import PresentationJoinCard from './PresentationJoinCard.svelte'
   import { presentationComposition } from '../../word-cloud/compositions'
-  import type { PresentationSession } from '../../types/presentation'
-
-  // Static fake session — no backend
-  const session: PresentationSession = {
-    title: 'Team workshop',
-    prompt: 'Hva forbinder du med godt samarbeid?',
-    joinCode: 'TEAM25',
-    joinUrl: 'ordboble.app/join/TEAM25',
-    participantCount: 24,
-  }
+  import { mockSession as session } from '../../mocks/session'
 </script>
 
 <!--

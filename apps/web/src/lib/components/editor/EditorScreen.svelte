@@ -9,6 +9,7 @@
   import StyleControls from './StyleControls.svelte'
   import ExportPanel from './ExportPanel.svelte'
   import type { EditorState, EditorTheme, EditorShape, EditorStyle } from '../../types/editor'
+  import { mockSession } from '../../mocks/session'
 
   // All editor state lives here — no stores, no persistence
   let state: EditorState = $state({
@@ -33,9 +34,8 @@
     state.style = { ...state.style, ...partial }
   }
 
-  // Fake static session data
-  const sessionTitle = 'Team workshop'
-  const sessionPrompt = 'Hva forbinder du med godt samarbeid?'
+  const sessionTitle = mockSession.title
+  const sessionPrompt = mockSession.prompt
 </script>
 
 <!--

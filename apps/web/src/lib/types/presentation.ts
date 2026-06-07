@@ -1,7 +1,1 @@
-export interface PresentationSession {
-  title: string
-  prompt: string
-  joinCode: string
-  joinUrl: string
-  participantCount: number
-}
+export type { Session as PresentationSession } from './session'
