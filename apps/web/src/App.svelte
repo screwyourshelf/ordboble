@@ -1,7 +1,7 @@
 <script lang="ts">
-  // Iteration 011: Temporarily showing EditorScreen prototype
-  import EditorScreen from './lib/components/editor/EditorScreen.svelte'
+  // Iteration 012: App composition root — all screens connected via AppShell
+  import AppShell from './lib/app/AppShell.svelte'
 </script>
 
-<EditorScreen />
+<AppShell />
 
