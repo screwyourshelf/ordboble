@@ -20,3 +20,11 @@ export interface WordEntry {
   y: number
   delay?: number
 }
+
+export type CompositionId = 'hero' | 'presentation' | 'compact'
+
+export interface WordCloudComposition {
+  id: CompositionId
+  label: string
+  words: WordEntry[]
+}

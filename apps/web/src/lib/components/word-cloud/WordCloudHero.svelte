@@ -1,43 +1,11 @@
 <script lang="ts">
-  import type { WordEntry } from '../../types/word-cloud'
   import GlowOrb from '../ui/GlowOrb.svelte'
   import GradientText from '../ui/GradientText.svelte'
   import Button from '../ui/Button.svelte'
   import Badge from '../ui/Badge.svelte'
   import WordCluster from './WordCluster.svelte'
   import FloatingParticle from './FloatingParticle.svelte'
-
-  const words: WordEntry[] = [
-    // ── Hero ── dominant center, gradient + strong glow, depth 1
-    { word: 'ordboble', size: '2xl', variant: 'hero',     depth: 1, glowIntensity: 'strong', rotation: -4,  x: 50, y: 48, delay: 0 },
-
-    // ── Ring 1 ── xl/lg, close orbit, solid + soft glow, depth 1
-    { word: 'kreativ',  size: 'xl',  variant: 'solid', color: 'accent',   depth: 1, glowIntensity: 'soft', rotation:  9,  x: 21, y: 30, delay: 0.10 },
-    { word: 'moro',     size: 'xl',  variant: 'solid', color: 'warm',     depth: 1, glowIntensity: 'soft', rotation: -13, x: 76, y: 26, delay: 0.15 },
-    { word: 'glede',    size: 'lg',  variant: 'solid', color: 'success',  depth: 1, glowIntensity: 'soft', rotation:  6,  x: 27, y: 67, delay: 0.20 },
-    { word: 'farger',   size: 'lg',  variant: 'solid', color: 'primary',  depth: 1, glowIntensity: 'soft', rotation: -9,  x: 73, y: 68, delay: 0.25 },
-
-    // ── Ring 2 ── md/sm, wider orbit, solid, depth 2
-    { word: 'dele',     size: 'md',  variant: 'solid', color: 'accent',   depth: 2, rotation:  16, x: 12, y: 50, delay: 0.30 },
-    { word: 'ord',      size: 'md',  variant: 'solid', color: 'warm',     depth: 2, rotation:  -3, x: 86, y: 47, delay: 0.12 },
-    { word: 'kunst',    size: 'md',  variant: 'solid', color: 'soft',     depth: 2, rotation:  11, x: 54, y: 21, delay: 0.18 },
-    { word: 'spill',    size: 'md',  variant: 'solid', color: 'accent',   depth: 2, rotation:  -7, x: 40, y: 78, delay: 0.22 },
-    { word: 'energi',   size: 'sm',  variant: 'solid', color: 'primary',  depth: 2, rotation:   8, x: 79, y: 62, delay: 0.28 },
-
-    // ── Ring 3 ── sm/xs, atmospheric, subtle, depth 2–3
-    { word: 'liv',      size: 'sm',  variant: 'subtle', color: 'warm',    depth: 2, rotation: -16, x: 18, y: 38, delay: 0.14 },
-    { word: 'idé',      size: 'sm',  variant: 'subtle', color: 'success', depth: 2, rotation:  13, x: 62, y: 84, delay: 0.32 },
-    { word: 'stemme',   size: 'sm',  variant: 'subtle', color: 'soft',    depth: 3, rotation:  -5, x: 10, y: 71, delay: 0.36 },
-    { word: 'lek',      size: 'sm',  variant: 'subtle', color: 'accent',  depth: 3, rotation:  19, x: 88, y: 36, delay: 0.16 },
-    { word: 'lys',      size: 'xs',  variant: 'subtle', color: 'warm',    depth: 3, rotation: -10, x: 46, y: 13, delay: 0.24 },
-
-    // ── Outermost ── xs, ghost accents, depth 3–4
-    { word: 'form',     size: 'xs',  variant: 'ghost',  color: 'soft',    depth: 3, rotation:   7, x: 22, y: 18, delay: 0.38 },
-    { word: 'farge',    size: 'xs',  variant: 'ghost',  color: 'primary', depth: 3, rotation: -12, x: 62, y: 14, delay: 0.42 },
-    { word: 'svar',     size: 'xs',  variant: 'ghost',  color: 'accent',  depth: 4, rotation:  15, x: 85, y: 78, delay: 0.20 },
-    { word: 'nå',       size: 'xs',  variant: 'ghost',  color: 'warm',    depth: 4, rotation:  -8, x: 9,  y: 22, delay: 0.44 },
-    { word: 'vi',       size: 'xs',  variant: 'ghost',  color: 'soft',    depth: 4, rotation:   4, x: 34, y: 8,  delay: 0.46 },
-  ]
+  import { heroComposition } from '../../word-cloud/compositions'
 </script>
 
 <section class="relative min-h-svh overflow-hidden flex items-center">
@@ -106,7 +74,7 @@
         ></div>
 
         <!-- The word cluster -->
-        <WordCluster {words} class="absolute inset-0" />
+        <WordCluster words={heroComposition.words} class="absolute inset-0" />
 
         <!-- Floating ambient particles -->
         <FloatingParticle color="accent"   size="md" x={12} y={18} delay={0}    duration={4.2} />
