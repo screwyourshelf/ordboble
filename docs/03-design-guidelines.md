@@ -239,3 +239,35 @@ The UI should make users feel:
 - this is alive
 - this will look good on screen
 - this is worth sharing
+
+---
+
+
+# Consistency Rules
+
+Once a visual pattern is introduced:
+- reuse it
+- extend it carefully
+- avoid creating near-duplicates
+
+Prefer:
+- evolving existing patterns
+- shared visual language
+- predictable spacing and motion
+
+Avoid:
+- multiple competing card styles
+- multiple button philosophies
+- inconsistent glow/shadow systems
+- introducing new gradients without reason
+
+---
+
+## Visual References
+
+Visual reference implementations and experiments live in:
+
+apps/web/references/
+
+These files are design references only.
+They are not production architecture references.

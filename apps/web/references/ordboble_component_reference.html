@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ordboble component reference</title>
+  <style>
+    /*
+      Ordboble visual/component reference
+      -----------------------------------
+      CSS is intentionally structured like Tailwind design tokens:
+      - semantic variables first
+      - small reusable component classes
+      - no page-specific random colors in markup
+
+      Tailwind mapping idea:
+      --color-bg        -> bg-background
+      --color-surface   -> bg-surface
+      --color-primary   -> bg-primary
+      --radius-card     -> rounded-card
+      --shadow-soft     -> shadow-soft
+      --gradient-hero   -> bg-gradient-hero
+    */
+
+    :root {
+      color-scheme: dark;
+
+      --color-bg: #070816;
+      --color-bg-soft: #101226;
+      --color-surface: rgba(17, 20, 42, 0.78);
+      --color-surface-strong: rgba(22, 25, 52, 0.94);
+      --color-surface-light: rgba(255, 255, 255, 0.08);
+      --color-border: rgba(255, 255, 255, 0.12);
+      --color-border-strong: rgba(255, 255, 255, 0.2);
+
+      --color-text: #ffffff;
+      --color-text-soft: #d9def3;
+      --color-muted: #9ea8c8;
+
+      --color-primary: #7c3cff;
+      --color-primary-2: #b02cff;
+      --color-accent: #ff4fa3;
+      --color-warm: #ff7a2f;
+      --color-yellow: #ffca3a;
+      --color-green: #20d07a;
+      --color-blue: #2299ff;
+      --color-cyan: #20d8e8;
+
+      --gradient-logo: linear-gradient(90deg, #ff7a2f, #ff4fa3, #8d4dff);
+      --gradient-hero: radial-gradient(circle at 72% 38%, rgba(255, 79, 163, 0.30), transparent 30%), radial-gradient(circle at 54% 68%, rgba(124, 60, 255, 0.28), transparent 34%), linear-gradient(135deg, #090a1d 0%, #11142b 46%, #080918 100%);
+      --gradient-button: linear-gradient(135deg, #ff7a2f, #ff4fa3 52%, #7c3cff);
+      --gradient-pill-purple: linear-gradient(135deg, #842fff, #d43dff);
+      --gradient-pill-pink: linear-gradient(135deg, #ff4f8b, #ff2f7d);
+      --gradient-pill-orange: linear-gradient(135deg, #ff9b28, #ff5c2a);
+      --gradient-pill-blue: linear-gradient(135deg, #18c7ff, #2563ff);
+      --gradient-pill-green: linear-gradient(135deg, #1fe69a, #20c45c);
+      --gradient-pill-yellow: linear-gradient(135deg, #ffe06a, #ffad27);
+
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.35rem;
+      --text-2xl: 1.75rem;
+      --text-3xl: 2.5rem;
+      --text-hero: clamp(3rem, 7vw, 6.4rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+
+      --radius-sm: 0.75rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.5rem;
+      --radius-card: 2rem;
+      --radius-pill: 999px;
+
+      --shadow-soft: 0 22px 70px rgba(0, 0, 0, 0.34);
+      --shadow-glow: 0 0 42px rgba(255, 79, 163, 0.34), 0 0 96px rgba(124, 60, 255, 0.22);
+      --shadow-pill: 0 12px 30px rgba(0, 0, 0, 0.28), inset 0 1px 1px rgba(255,255,255,.35);
+
+      --transition-fast: 160ms ease;
+      --transition-soft: 280ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--gradient-hero);
+    }
+
+    button, input, select { font: inherit; }
+
+    .app-shell {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: var(--space-6);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.95fr) minmax(500px, 1.65fr);
+      gap: var(--space-6);
+      align-items: stretch;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--space-6);
+    }
+
+    .stack { display: grid; gap: var(--space-4); }
+    .cluster { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+    .split { display: flex; justify-content: space-between; gap: var(--space-4); align-items: center; }
+
+    .text-gradient {
+      background: var(--gradient-logo);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: fit-content;
+      padding: 0.45rem 0.8rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-soft);
+      font-size: var(--text-sm);
+      backdrop-filter: blur(12px);
+    }
+
+    .title-hero {
+      margin: 0;
+      font-size: var(--text-hero);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      font-weight: 900;
+    }
+
+    .title-section {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--color-text-soft);
+      font-size: var(--text-lg);
+      line-height: 1.55;
+      max-width: 35rem;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(20px);
+    }
+
+    .card-pad { padding: var(--space-8); }
+    .card-sm { border-radius: var(--radius-lg); padding: var(--space-6); }
+    .card-light { background: rgba(255,255,255,.94); color: #111827; }
+    .card-dark { background: rgba(8, 11, 27, 0.92); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 3.25rem;
+      padding: 0 var(--space-6);
+      border: 0;
+      border-radius: var(--radius-pill);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform var(--transition-soft), box-shadow var(--transition-soft), opacity var(--transition-fast);
+      text-decoration: none;
+      color: var(--color-text);
+    }
+
+    .button:hover { transform: translateY(-2px) scale(1.02); }
+    .button-primary { background: var(--gradient-button); box-shadow: 0 18px 45px rgba(255,79,163,.28); }
+    .button-secondary { background: rgba(255,255,255,.08); border: 1px solid var(--color-border-strong); color: var(--color-text); }
+    .button-ghost { background: rgba(255,255,255,.06); color: var(--color-text-soft); }
+
+    .input, .select {
+      width: 100%;
+      min-height: 3.15rem;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,.07);
+      color: var(--color-text);
+      outline: none;
+    }
+
+    .label {
+      display: grid;
+      gap: var(--space-2);
+      color: var(--color-text-soft);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .toggle {
+      width: 3.25rem;
+      height: 1.8rem;
+      border-radius: var(--radius-pill);
+      padding: 0.2rem;
+      background: var(--gradient-button);
+      display: flex;
+      justify-content: flex-end;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
+    }
+
+    .toggle::after {
+      content: "";
+      width: 1.4rem;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 3px 10px rgba(0,0,0,.28);
+    }
+
+    .topbar {
+      position: sticky;
+      top: var(--space-4);
+      z-index: 10;
+      margin-bottom: var(--space-6);
+      padding: var(--space-3);
+      border-radius: var(--radius-pill);
+      background: rgba(8, 11, 27, 0.66);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 50px rgba(0,0,0,.22);
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: var(--text-xl);
+      letter-spacing: -0.04em;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.08);
+      color: var(--color-text-soft);
+      font-size: var(--text-sm);
+      font-weight: 800;
+    }
+
+    .nav-pill.is-active { background: var(--gradient-button); color: white; }
+
+    .hero {
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-8);
+      align-items: center;
+      padding: clamp(2rem, 5vw, 5rem);
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: var(--space-4);
+      color: var(--color-text-soft);
+      font-weight: 700;
+    }
+
+    .feature-list li { display: flex; align-items: center; gap: var(--space-3); }
+
+    .icon-tile {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: var(--radius-sm);
+      display: inline-grid;
+      place-items: center;
+      background: var(--gradient-button);
+      box-shadow: 0 12px 26px rgba(255,79,163,.25);
+    }
+
+    /* Word cloud component ------------------------------------------------ */
+    .word-cloud {
+      position: relative;
+      min-height: 520px;
+      border-radius: var(--radius-card);
+      overflow: visible;
+      isolation: isolate;
+    }
+
+    .word-cloud::before,
+    .word-cloud::after {
+      content: "";
+      position: absolute;
+      inset: 7% 4%;
+      z-index: -1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,79,163,.34), transparent 65%);
+      filter: blur(34px);
+      opacity: .9;
+    }
+
+    .word-cloud::after {
+      inset: 18% 10% 8% 20%;
+      background: radial-gradient(circle, rgba(34,153,255,.28), transparent 70%);
+    }
+
+    .word-pill {
+      --x: 50%;
+      --y: 50%;
+      --r: 0deg;
+      --s: 1;
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%) rotate(var(--r)) scale(var(--s));
+      padding: 0.7em 1.05em;
+      border-radius: var(--radius-pill);
+      color: white;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      box-shadow: var(--shadow-pill), 0 0 30px var(--glow, rgba(255,255,255,.18));
+      white-space: nowrap;
+      user-select: none;
+      animation: float 6s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      z-index: var(--z, 2);
+    }
+
+    .word-main {
+      font-size: clamp(2.2rem, 5vw, 5.4rem);
+      padding: 0.35em 0.72em;
+      background: linear-gradient(135deg, #ff3fa4, #8f35ff 60%, #2f7dff);
+      --glow: rgba(255,63,164,.65);
+      z-index: 8;
+    }
+
+    .word-lg { font-size: clamp(1.3rem, 2.5vw, 2.5rem); }
+    .word-md { font-size: clamp(1rem, 1.7vw, 1.45rem); }
+    .word-sm { font-size: 0.9rem; }
+
+    .pill-purple { background: var(--gradient-pill-purple); --glow: rgba(124,60,255,.5); }
+    .pill-pink { background: var(--gradient-pill-pink); --glow: rgba(255,79,163,.55); }
+    .pill-orange { background: var(--gradient-pill-orange); --glow: rgba(255,122,47,.5); }
+    .pill-blue { background: var(--gradient-pill-blue); --glow: rgba(34,153,255,.48); }
+    .pill-green { background: var(--gradient-pill-green); --glow: rgba(32,208,122,.45); }
+    .pill-yellow { background: var(--gradient-pill-yellow); color: #3b2100; --glow: rgba(255,202,58,.45); }
+
+    .particle {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--size, 0.65rem);
+      height: var(--size, 0.65rem);
+      border-radius: 999px;
+      background: var(--c, var(--color-accent));
+      box-shadow: 0 0 22px var(--c, var(--color-accent));
+      opacity: 0.9;
+      animation: twinkle 3.8s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .sparkle {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      color: var(--c, #ffca3a);
+      font-size: var(--size, 1.1rem);
+      filter: drop-shadow(0 0 10px currentColor);
+      animation: twinkle 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -10px; }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: .45; transform: scale(.85) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.18) rotate(14deg); }
+    }
+
+    /* Example pages/components ------------------------------------------ */
+    .page-card { min-height: 410px; }
+    .page-card-header { margin-bottom: var(--space-5); }
+    .page-number {
+      display: inline-grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.8rem;
+      background: linear-gradient(135deg, #5b5cff, #8a37ff);
+      font-weight: 900;
+      margin-right: var(--space-2);
+    }
+
+    .qr {
+      width: 10rem;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      background:
+        linear-gradient(90deg, #111 10px, transparent 10px) 0 0 / 20px 20px,
+        linear-gradient(#111 10px, transparent 10px) 0 0 / 20px 20px,
+        #fff;
+      border: 0.8rem solid #fff;
+      box-shadow: 0 16px 40px rgba(0,0,0,.28);
+    }
+
+    .control-panel {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-5);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--color-border);
+    }
+
+    .shape-button, .color-dot {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: var(--radius-md);
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,.07);
+      color: var(--color-text);
+    }
+
+    .color-dot {
+      border-radius: var(--radius-pill);
+      width: 1.6rem;
+      height: 1.6rem;
+      border: 2px solid rgba(255,255,255,.5);
+      background: var(--dot);
+    }
+
+    .mobile-frame {
+      max-width: 330px;
+      margin: 0 auto;
+      border-radius: 2.4rem;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,.06);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .success-box {
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--color-border);
+    }
+
+    .presentation {
+      min-height: 520px;
+      background:
+        radial-gradient(circle at 56% 48%, rgba(255,79,163,.24), transparent 35%),
+        radial-gradient(circle at 70% 65%, rgba(32,216,232,.20), transparent 30%),
+        linear-gradient(135deg, #080b1a, #131338 60%, #070817);
+    }
+
+    .mini-cloud { min-height: 330px; transform: scale(.78); transform-origin: center; }
+
+    @media (max-width: 980px) {
+      .section-grid, .demo-grid, .hero { grid-template-columns: 1fr; }
+      .hero { min-height: auto; padding: var(--space-8) var(--space-5); }
+      .topbar .cluster.nav { display: none; }
+      .word-cloud { min-height: 420px; }
+    }
+
+    @media (max-width: 620px) {
+      .app-shell { padding: var(--space-3); }
+      .card-pad { padding: var(--space-5); }
+      .title-hero { font-size: 3.3rem; }
+      .word-main { font-size: 2.2rem; }
+      .word-cloud { min-height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell stack">
+    <nav class="topbar split">
+      <div class="logo text-gradient">Ordboble</div>
+      <div class="cluster nav">
+        <span class="nav-pill is-active">Landing</span>
+        <span class="nav-pill">Create</span>
+        <span class="nav-pill">Share</span>
+        <span class="nav-pill">Mobile</span>
+        <span class="nav-pill">Presentation</span>
+        <span class="nav-pill">Editor</span>
+      </div>
+    </nav>
+
+    <section class="card hero">
+      <div class="stack" style="gap: var(--space-8)">
+        <span class="eyebrow">✨ Live collaborative word clouds</span>
+        <div class="stack">
+          <h1 class="title-hero">Turn ideas<br />into <span class="text-gradient">impact</span></h1>
+          <p class="lead">Create, share and celebrate word clouds that bring ideas to life.</p>
+        </div>
+        <ul class="feature-list">
+          <li><span class="icon-tile">⚡</span>Create in seconds</li>
+          <li><span class="icon-tile">🔗</span>Share via QR or link</li>
+          <li><span class="icon-tile">✨</span>Live updates and magical visuals</li>
+          <li><span class="icon-tile">🎨</span>Customize everything</li>
+        </ul>
+        <div class="cluster">
+          <a class="button button-primary" href="#">Create Word Cloud ✨</a>
+          <a class="button button-secondary" href="#">See demo</a>
+        </div>
+      </div>
+
+      <div class="word-cloud" aria-label="Organic colorful word cloud preview">
+        <span class="word-pill word-main" style="--x:52%;--y:51%;--r:-1deg;--s:1;--delay:-.2s">Inspiration</span>
+        <span class="word-pill word-lg pill-orange" style="--x:35%;--y:24%;--r:-12deg;--s:1.05;--delay:-1s">Creative</span>
+        <span class="word-pill word-lg pill-blue" style="--x:70%;--y:22%;--r:10deg;--s:.96;--delay:-2s">Dream</span>
+        <span class="word-pill word-lg pill-pink" style="--x:28%;--y:43%;--r:-11deg;--s:.92;--delay:-3s">Fun</span>
+        <span class="word-pill word-md pill-green" style="--x:31%;--y:65%;--r:-13deg;--s:1;--delay:-.8s">Together</span>
+        <span class="word-pill word-md pill-orange" style="--x:74%;--y:61%;--r:14deg;--s:1.1;--delay:-1.6s">Impact</span>
+        <span class="word-pill word-md pill-blue" style="--x:52%;--y:72%;--r:-3deg;--s:1.05;--delay:-2.5s">Imagine</span>
+        <span class="word-pill word-md pill-purple" style="--x:75%;--y:42%;--r:-10deg;--s:.9;--delay:-.4s">Ideas</span>
+        <span class="word-pill word-sm pill-yellow" style="--x:51%;--y:27%;--r:7deg;--s:1;--delay:-1.4s">Build</span>
+        <span class="word-pill word-sm pill-purple" style="--x:41%;--y:76%;--r:8deg;--s:1;--delay:-2.4s">Share</span>
+        <span class="word-pill word-sm pill-cyan pill-blue" style="--x:65%;--y:74%;--r:6deg;--s:1;--delay:-3.1s">Connect</span>
+        <span class="sparkle" style="--x:15%;--y:20%;--size:1.4rem">✦</span>
+        <span class="sparkle" style="--x:86%;--y:28%;--size:1.8rem;--c:#ff4fa3">✦</span>
+        <span class="sparkle" style="--x:79%;--y:80%;--size:1.2rem;--c:#20d8e8">✦</span>
+        <span class="particle" style="--x:20%;--y:73%;--c:#ffca3a"></span>
+        <span class="particle" style="--x:87%;--y:58%;--c:#ff4fa3;--size:.45rem"></span>
+        <span class="particle" style="--x:17%;--y:52%;--c:#20d8e8;--size:.5rem"></span>
+      </div>
+    </section>
+
+    <section class="demo-grid">
+      <article class="card card-pad page-card">
+        <header class="page-card-header">
+          <span class="page-number">1</span><strong>Create cloud</strong>
+        </header>
+        <div class="section-grid" style="grid-template-columns: 1fr .9fr; gap: var(--space-5)">
+          <div class="stack">
+            <label class="label">Question<input class="input" value="What inspires you?" /></label>
+            <div class="cluster">
+              <label class="label" style="flex:1">Expires<select class="select"><option>2 days</option></select></label>
+              <label class="label" style="flex:1">Max words<select class="select"><option>50</option></select></label>
+            </div>
+            <div class="split"><span class="label">Live updates</span><span class="toggle"></span></div>
+            <button class="button button-primary">Create Word Cloud ✨</button>
+          </div>
+          <div class="card card-sm card-dark">
+            <div class="word-cloud mini-cloud">
+              <span class="word-pill word-main" style="--x:52%;--y:53%;--s:.62">Inspiration</span>
+              <span class="word-pill word-md pill-pink" style="--x:35%;--y:32%;--r:-13deg">Creative</span>
+              <span class="word-pill word-md pill-green" style="--x:65%;--y:28%;--r:12deg">Dream</span>
+              <span class="word-pill word-sm pill-blue" style="--x:70%;--y:63%;--r:-10deg">Share</span>
+              <span class="word-pill word-sm pill-orange" style="--x:31%;--y:65%;--r:10deg">Impact</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card card-pad page-card">
+        <header class="page-card-header">
+          <span class="page-number">2</span><strong>Share cloud</strong>
+        </header>
+        <div class="split" style="align-items:center">
+          <div class="stack">
+            <h2 class="title-section">Your word cloud is ready! 🎉</h2>
+            <p class="lead" style="font-size:var(--text-base)">Scan to join or share the link.</p>
+            <div class="cluster"><button class="button button-primary">Open presentation</button><button class="button button-secondary">Copy link</button></div>
+          </div>
+          <div class="qr" aria-label="QR placeholder"></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="demo-grid">
+      <article class="card card-pad page-card">
+        <header class="page-card-header">
+          <span class="page-number">3</span><strong>Contributor mobile</strong>
+        </header>
+        <div class="mobile-frame stack">
+          <h2 class="title-section">What inspires you? 💡</h2>
+          <input class="input" placeholder="Type your word..." />
+          <button class="button button-secondary">+ Add another word</button>
+          <button class="button button-primary">Submit ✨</button>
+          <div class="success-box">😊 <strong>Thanks!</strong><br /><span style="color:var(--color-muted)">Your words are in!</span></div>
+        </div>
+      </article>
+
+      <article class="card card-pad page-card presentation">
+        <header class="split page-card-header">
+          <div><span class="page-number">4</span><strong>Live presentation</strong></div>
+          <span class="eyebrow">🔴 LIVE · 128 participants</span>
+        </header>
+        <div class="word-cloud mini-cloud">
+          <span class="word-pill word-main" style="--x:52%;--y:51%;--s:.78">Inspiration</span>
+          <span class="word-pill word-lg pill-pink" style="--x:34%;--y:25%;--r:-10deg">Creative</span>
+          <span class="word-pill word-lg pill-blue" style="--x:70%;--y:28%;--r:9deg">Dream</span>
+          <span class="word-pill word-md pill-orange" style="--x:76%;--y:55%;--r:12deg">Share</span>
+          <span class="word-pill word-md pill-green" style="--x:32%;--y:62%;--r:-9deg">Think</span>
+          <span class="word-pill word-md pill-purple" style="--x:43%;--y:72%;--r:8deg">Imagine</span>
+          <span class="sparkle" style="--x:18%;--y:38%;--size:1.4rem">✦</span>
+          <span class="sparkle" style="--x:82%;--y:36%;--size:1.3rem;--c:#ff4fa3">✦</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="card card-pad">
+      <header class="page-card-header">
+        <span class="page-number">5</span><strong>Editor / components</strong>
+      </header>
+      <div class="section-grid">
+        <div class="control-panel">
+          <strong>Shape</strong>
+          <div class="cluster">
+            <button class="shape-button">☁️</button><button class="shape-button">○</button><button class="shape-button">♡</button><button class="shape-button">☆</button>
+          </div>
+          <strong>Theme</strong>
+          <div class="cluster">
+            <span class="color-dot" style="--dot:#7c3cff"></span><span class="color-dot" style="--dot:#ff4fa3"></span><span class="color-dot" style="--dot:#ff7a2f"></span><span class="color-dot" style="--dot:#20d07a"></span><span class="color-dot" style="--dot:#2299ff"></span>
+          </div>
+          <strong>Export</strong>
+          <div class="cluster"><button class="button button-ghost">PNG</button><button class="button button-ghost">SVG</button><button class="button button-ghost">PDF</button><button class="button button-ghost">Print</button></div>
+        </div>
+        <div class="word-cloud">
+          <span class="word-pill word-main" style="--x:52%;--y:51%;--s:.86">Inspiration</span>
+          <span class="word-pill word-lg pill-pink" style="--x:34%;--y:25%;--r:-10deg">Creative</span>
+          <span class="word-pill word-lg pill-blue" style="--x:70%;--y:28%;--r:9deg">Dream</span>
+          <span class="word-pill word-md pill-orange" style="--x:76%;--y:55%;--r:12deg">Impact</span>
+          <span class="word-pill word-md pill-green" style="--x:32%;--y:62%;--r:-9deg">Together</span>
+          <span class="word-pill word-md pill-purple" style="--x:43%;--y:72%;--r:8deg">Imagine</span>
+          <span class="word-pill word-sm pill-yellow" style="--x:55%;--y:27%;--r:6deg">Build</span>
+          <span class="word-pill word-sm pill-blue" style="--x:66%;--y:73%;--r:-7deg">Connect</span>
+          <span class="sparkle" style="--x:18%;--y:38%;--size:1.4rem">✦</span>
+          <span class="sparkle" style="--x:82%;--y:36%;--size:1.3rem;--c:#ff4fa3">✦</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ordboble visual reference</title>
+  <style>
+    :root {
+      --bg: #070b18;
+      --panel: rgba(15, 23, 42, .76);
+      --panel-strong: rgba(17, 24, 39, .92);
+      --stroke: rgba(255,255,255,.10);
+      --text: #f8fafc;
+      --muted: #aab4c5;
+      --orange: #ff6a2a;
+      --pink: #ff3fa4;
+      --purple: #7c3cff;
+      --blue: #1d9bff;
+      --cyan: #13d5e8;
+      --green: #19ce72;
+      --yellow: #ffb928;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --shadow-glow: 0 0 80px rgba(255, 62, 164, .35), 0 0 140px rgba(124, 60, 255, .25);
+      --shadow-card: 0 24px 70px rgba(0,0,0,.28);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(124,60,255,.28), transparent 34%),
+        radial-gradient(circle at 16% 8%, rgba(255,106,42,.16), transparent 28%),
+        radial-gradient(circle at 90% 88%, rgba(255,63,164,.18), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 26px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 370px 1fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .brief, .card {
+      background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(7,11,24,.82));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(18px);
+    }
+
+    .brief {
+      padding: 24px;
+      position: sticky;
+      top: 20px;
+      line-height: 1.55;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    .logo, .gradient-text {
+      background: linear-gradient(90deg, var(--orange), var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .brief h1 { font-size: 22px; margin-bottom: 18px; }
+    .brief h3 { color: #d8b4fe; font-size: 15px; margin: 24px 0 8px; }
+    .brief ul, .brief ol { padding-left: 20px; color: #e5e7eb; }
+    .brief li { margin: 6px 0; }
+    .brief .important { color: #d8b4fe; font-weight: 800; }
+
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 270px;
+      padding: 28px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 62% 40%, rgba(255,63,164,.28), transparent 22%),
+        radial-gradient(circle at 80% 68%, rgba(29,155,255,.16), transparent 24%),
+        radial-gradient(circle at 20% 82%, rgba(255,106,42,.16), transparent 20%);
+      pointer-events: none;
+    }
+
+    .content { position: relative; z-index: 2; }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+    .span-6 { grid-column: span 6; }
+
+    .page-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .num {
+      width: 22px; height: 22px;
+      display: grid; place-items: center;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      box-shadow: 0 0 26px rgba(124,60,255,.55);
+    }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 34px;
+    }
+    .nav a { color: rgba(255,255,255,.78); text-decoration: none; font-size: 12px; margin-left: 28px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 20px;
+      color: white;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--orange), var(--pink), var(--purple));
+      box-shadow: 0 10px 34px rgba(255,63,164,.28);
+    }
+    .button.secondary { background: rgba(255,255,255,.06); border: 1px solid var(--stroke); box-shadow: none; }
+
+    .hero-copy h2 {
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: .96;
+      letter-spacing: -.05em;
+      margin: 0 0 22px;
+    }
+    .hero-copy p { color: var(--muted); max-width: 350px; }
+    .hero-row {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .mini-list { margin: 24px 0; display: grid; gap: 12px; color: #e5e7eb; }
+    .mini-list span { display: flex; gap: 12px; align-items: center; }
+    .icon {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+    }
+
+    .word-cloud {
+      position: relative;
+      min-height: 310px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 48% 52%, rgba(255, 63, 164, .35), transparent 25%),
+        radial-gradient(circle at 65% 35%, rgba(29,155,255,.25), transparent 30%),
+        radial-gradient(circle at 38% 60%, rgba(255,185,40,.22), transparent 28%),
+        rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      overflow: visible;
+      box-shadow: inset 0 0 80px rgba(255,255,255,.05), var(--shadow-glow);
+    }
+
+    .word {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: white;
+      font-weight: 900;
+      letter-spacing: -.03em;
+      padding: .55em 1.05em;
+      box-shadow: 0 16px 36px rgba(0,0,0,.28), inset 0 2px 8px rgba(255,255,255,.25);
+      text-shadow: 0 2px 8px rgba(0,0,0,.18);
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      animation: float 5s ease-in-out infinite;
+    }
+    .word.main {
+      left: 50%; top: 52%;
+      font-size: 44px;
+      padding: .55em 1.3em;
+      background: linear-gradient(135deg, #ff48bd, #743cff 58%, #1d9bff);
+      z-index: 5;
+      box-shadow: 0 0 60px rgba(255,63,164,.5), 0 24px 70px rgba(0,0,0,.35);
+    }
+    .w1 { left: 37%; top: 30%; font-size: 25px; background: linear-gradient(135deg,#ff513b,#ff9b21); --r:-10deg; }
+    .w2 { left: 62%; top: 25%; font-size: 23px; background: linear-gradient(135deg,#16d073,#3bd5ff); --r:10deg; animation-delay:-1s; }
+    .w3 { left: 75%; top: 35%; font-size: 23px; background: linear-gradient(135deg,#7c3cff,#d946ef); --r:13deg; animation-delay:-2s; }
+    .w4 { left: 24%; top: 52%; font-size: 21px; background: linear-gradient(135deg,#ff3fa4,#ff7a39); --r:-13deg; animation-delay:-3s; }
+    .w5 { left: 30%; top: 72%; font-size: 20px; background: linear-gradient(135deg,#19ce72,#04b6d8); --r:-9deg; animation-delay:-.5s; }
+    .w6 { left: 70%; top: 68%; font-size: 20px; background: linear-gradient(135deg,#ff7a1a,#ff356d); --r:14deg; animation-delay:-2.5s; }
+    .w7 { left: 52%; top: 76%; font-size: 17px; background: linear-gradient(135deg,#1d9bff,#7c3cff); --r:-6deg; animation-delay:-1.8s; }
+    .w8 { left: 18%; top: 34%; font-size: 17px; background: linear-gradient(135deg,#7c3cff,#4aa3ff); --r:24deg; animation-delay:-3.2s; }
+    .w9 { left: 83%; top: 58%; font-size: 18px; background: linear-gradient(135deg,#13d5e8,#1d9bff); --r:-12deg; animation-delay:-.8s; }
+    .w10 { left: 47%; top: 21%; font-size: 14px; background: linear-gradient(135deg,#a3e635,#19ce72); --r:4deg; animation-delay:-4s; }
+
+    .sparkle, .blob {
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 1;
+      animation: drift 7s ease-in-out infinite;
+    }
+    .sparkle { width: 9px; height: 9px; background: var(--yellow); box-shadow: 0 0 18px var(--yellow); }
+    .s1 { left: 18%; top: 20%; } .s2 { left: 78%; top: 22%; animation-delay:-2s; background:var(--pink); } .s3 { left: 88%; top: 80%; animation-delay:-4s; background:var(--cyan); }
+    .blob { width: 46px; height: 46px; filter: blur(.2px); opacity: .78; background: linear-gradient(135deg,var(--orange),var(--pink)); }
+    .b1 { right: -18px; bottom: 22px; } .b2 { left: -12px; top: 55px; background: linear-gradient(135deg,var(--blue),var(--purple)); animation-delay:-3s; }
+
+    @keyframes float {
+      0%, 100% { margin-top: 0; filter: saturate(1); }
+      50% { margin-top: -10px; filter: saturate(1.18); }
+    }
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); opacity: .75; }
+      50% { transform: translate(8px,-14px) scale(1.12); opacity: 1; }
+    }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+    input, select {
+      width: 100%; padding: 14px 15px; border-radius: 12px;
+      border: 1px solid var(--stroke); background: rgba(255,255,255,.04); color: var(--text);
+    }
+    label { display:block; font-size: 12px; color: var(--muted); margin-bottom: 7px; }
+    .qr { width: 150px; height: 150px; background: repeating-linear-gradient(45deg,#fff 0 7px,#111 7px 14px); border-radius: 12px; box-shadow: 0 0 0 12px #fff; margin: 24px auto; }
+    .mobile-shell { max-width: 260px; margin: 0 auto; border-radius: 30px; padding: 18px; background: rgba(255,255,255,.04); border:1px solid var(--stroke); }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .chip { border: 1px solid var(--stroke); background: rgba(255,255,255,.05); padding: 10px 13px; border-radius: 12px; color: var(--text); font-weight: 700; }
+    .palette { display: flex; gap: 10px; margin-top: 14px; }
+    .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--c); box-shadow: 0 0 18px color-mix(in srgb, var(--c), transparent 35%); }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: 1fr; }
+      .brief { position: static; }
+      .span-7,.span-5,.span-4,.span-3,.span-6 { grid-column: span 12; }
+      .hero-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page grid">
+    <aside class="brief">
+      <h1>Ordboble visual reference 🌈☁️✨</h1>
+      <p>Use this as a frontend/design reference for Copilot. No backend logic. Focus on look, feel, layout and reusable styling patterns.</p>
+      <h3>Visual direction</h3>
+      <ul>
+        <li>Playful, vibrant and full of energy.</li>
+        <li>Word cloud is the hero element.</li>
+        <li>One big main word in the center.</li>
+        <li>Many surrounding words in different sizes, colors, rotations and fonts.</li>
+        <li>Organic cloud shape, not linear or aligned.</li>
+        <li>Words overlap, float and cluster naturally.</li>
+        <li>Rich gradients, soft glows, shadows and depth.</li>
+        <li>Floating particles, sparkles, blobs and confetti.</li>
+      </ul>
+      <h3>Overall feeling</h3>
+      <p>A joyful, immersive, magical creativity experience. Make it feel like an explosion of ideas and collaboration.</p>
+      <p class="important">Use this file as style inspiration, not final production code.</p>
+    </aside>
+
+    <section class="screens">
+      <article class="card span-7">
+        <div class="content">
+          <div class="page-label"><span class="num">1</span> Landing Page</div>
+          <nav class="nav"><strong class="logo">Ordboble</strong><div><a>How it works</a><a>Features</a><a>Pricing</a></div><button class="button">Get started</button></nav>
+          <div class="hero-row">
+            <div class="hero-copy">
+              <h2>Turn <span class="gradient-text">ideas</span><br/>into <span class="gradient-text">impact</span></h2>
+              <p>Create, share and celebrate word clouds together.</p>
+              <div class="toolbar"><button class="button">Create Word Cloud</button><button class="button secondary">See Demo</button></div>
+            </div>
+            <div class="word-cloud">
+              <i class="sparkle s1"></i><i class="sparkle s2"></i><i class="sparkle s3"></i><i class="blob b1"></i><i class="blob b2"></i>
+              <span class="word main">Inspiration</span><span class="word w1">Creative</span><span class="word w2">Dream</span><span class="word w3">Ideas</span><span class="word w4">Fun</span><span class="word w5">Together</span><span class="word w6">Impact</span><span class="word w7">Share</span><span class="word w8">Think</span><span class="word w9">Connect</span><span class="word w10">Build</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-5">
+        <div class="content">
+          <div class="page-label"><span class="num">2</span> Create Cloud</div>
+          <h2>Create your<br/>word cloud ✨</h2>
+          <div class="hero-row" style="grid-template-columns:1fr 1fr">
+            <div>
+              <label>What’s your question?</label><input placeholder="e.g. What inspires you?" />
+              <div class="form-grid"><div><label>Expires in</label><select><option>2 days</option></select></div><div><label>Max words</label><select><option>50</option></select></div></div>
+              <br/><button class="button" style="width:100%">Create Word Cloud ✨</button>
+            </div>
+            <div class="word-cloud" style="min-height:230px; transform:scale(.75); transform-origin:center;"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-4"><div class="content"><div class="page-label"><span class="num">3</span> Share Page</div><h2>Your word cloud is ready! 🎉</h2><div class="qr"></div><div class="toolbar"><button class="button">Open Presentation</button><button class="button secondary">Copy link</button></div></div></article>
+
+      <article class="card span-3"><div class="content"><div class="page-label"><span class="num">4</span> Contributor Mobile Page</div><div class="mobile-shell"><h2>What inspires you? 💡</h2><input placeholder="Type your word..."/><br/><br/><button class="button" style="width:100%">Submit ✨</button><p style="margin-top:18px">🙂 Thanks! Your words are in!</p></div></div></article>
+
+      <article class="card span-5"><div class="content"><div class="page-label"><span class="num">5</span> Live Presentation Page</div><div class="word-cloud" style="min-height:260px"><span class="word main">Inspiration</span><span class="word w1">Creative</span><span class="word w2">Dream</span><span class="word w3">Ideas</span><span class="word w4">Think</span><span class="word w5">Together</span><span class="word w6">Share</span><span class="word w9">Imagine</span><i class="sparkle s1"></i><i class="sparkle s2"></i><i class="blob b1"></i></div></div></article>
+
+      <article class="card span-6"><div class="content"><div class="page-label"><span class="num">6</span> Editor & Customization Page</div><div class="hero-row"><div><h3>Shape</h3><div class="toolbar"><button class="chip">☁️</button><button class="chip">○</button><button class="chip">♡</button><button class="chip">☆</button></div><h3>Theme</h3><div class="palette"><span class="dot" style="--c:#7c3cff"></span><span class="dot" style="--c:#ff3fa4"></span><span class="dot" style="--c:#ff6a2a"></span><span class="dot" style="--c:#19ce72"></span><span class="dot" style="--c:#1d9bff"></span></div></div><div class="word-cloud" style="min-height:230px"><span class="word main">Inspiration</span><span class="word w1">Creative</span><span class="word w2">Dream</span><span class="word w5">Together</span><span class="word w6">Fun</span></div></div></div></article>
+
+      <article class="card span-6"><div class="content"><div class="page-label"><span class="num">7</span> Components</div><h2>Design system</h2><div class="toolbar"><button class="button">Primary</button><button class="button secondary">Secondary</button><button class="chip">New</button><button class="chip">Popular</button><button class="chip">🔥 Hot</button></div><div class="palette"><span class="dot" style="--c:#7c3cff"></span><span class="dot" style="--c:#ff3fa4"></span><span class="dot" style="--c:#ff6a2a"></span><span class="dot" style="--c:#ffb928"></span><span class="dot" style="--c:#19ce72"></span><span class="dot" style="--c:#13d5e8"></span><span class="dot" style="--c:#1d9bff"></span></div></div></article>
+    </section>
+  </main>
+</body>
+</html>
