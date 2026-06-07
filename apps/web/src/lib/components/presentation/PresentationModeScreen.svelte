@@ -11,6 +11,8 @@
   import type { WordEntry } from '../../types/word-cloud'
   import env from '../../config/env'
 
+  const cloudId = env.cloudId || session.id
+
   // Start with static composition; append live words on top
   let liveWords: WordEntry[] = $state([...presentationComposition.words])
 
@@ -19,7 +21,7 @@
   let colorIndex = 0
 
   const unsubscribe = env.apiBaseUrl
-    ? subscribeToCloudEvents(session.id, {
+    ? subscribeToCloudEvents(cloudId, {
         onWordAdded(payload) {
           const color = liveColors[colorIndex % liveColors.length]
           colorIndex++

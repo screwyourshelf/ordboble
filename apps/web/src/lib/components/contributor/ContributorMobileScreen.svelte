@@ -6,6 +6,9 @@
   import SuccessConfirmation from './SuccessConfirmation.svelte'
   import { mockSession as session } from '../../mocks/session'
   import { submitWords } from '../../services/word-api'
+  import env from '../../config/env'
+
+  const cloudId = env.cloudId || session.id
 
   let submitted = $state(false)
   let submittedWords = $state<string[]>([])
@@ -16,7 +19,7 @@
     loading = true
     error = null
 
-    const result = await submitWords(session.id, words)
+    const result = await submitWords(cloudId, words)
 
     loading = false
 

@@ -64,13 +64,18 @@ Optional:
   - Session read API
   - Word submission API
 
-- [>] 015.1 — Connect contributor flow to backend
+- [x] 015 — Realtime foundation
+  - SSE endpoint
+  - Realtime frontend integration
+  - Live presentation updates
+
+- [x] 015.1 — Connect contributor flow to backend
   - Submit real words from contributor screen
   - Use clientId
   - Handle API errors
   - Keep success state
 
-- [ ] 015.2 — End-to-end live loop verification
+- [x] 015.2 — End-to-end live loop verification
   - Contributor submit → D1 → SSE → Presentation update
 
 Optional:
