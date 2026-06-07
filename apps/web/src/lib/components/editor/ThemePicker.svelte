@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { EditorTheme } from '../../types/editor'
+  import type { ThemeId } from '../../types/theme'
   import { themes } from '../../design/themes'
 
   interface Props {
-    selected: EditorTheme
-    onSelect: (theme: EditorTheme) => void
+    selected: ThemeId
+    onSelect: (theme: ThemeId) => void
   }
 
   let { selected, onSelect }: Props = $props()

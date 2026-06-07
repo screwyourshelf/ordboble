@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { EditorShape } from '../../types/editor'
+  import type { ShapeId } from '../../types/shape'
   import { shapes } from '../../design/shapes'
 
   interface Props {
-    selected: EditorShape
-    onSelect: (shape: EditorShape) => void
+    selected: ShapeId
+    onSelect: (shape: ShapeId) => void
   }
 
   let { selected, onSelect }: Props = $props()
