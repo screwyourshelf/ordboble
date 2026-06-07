@@ -21,7 +21,7 @@
 
 # First UX Prototype
 
-- [ ] 005 — Landing page hero prototype
+- [x] 005 — Landing page hero prototype
 - [ ] 006 — Word token system
 - [ ] 007 — Fake word cloud engine
 - [ ] 008 — Contributor mobile screen

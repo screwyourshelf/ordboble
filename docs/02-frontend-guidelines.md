@@ -137,6 +137,16 @@ Presentation pages must work well on large screens/projectors.
 
 ---
 
+## Imports
+
+This project uses Svelte + Vite, not SvelteKit.
+
+Do not use `$lib` imports unless an alias is explicitly configured.
+
+Prefer relative imports for now.
+
+---
+
 # Performance
 
 Keep the frontend lightweight.
