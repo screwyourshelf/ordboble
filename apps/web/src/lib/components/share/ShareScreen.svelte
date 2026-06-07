@@ -6,16 +6,21 @@
   import Badge from '../ui/Badge.svelte'
   import GradientText from '../ui/GradientText.svelte'
   import Card from '../ui/Card.svelte'
-  import QRCodePlaceholder from './QRCodePlaceholder.svelte'
+  import QRCode from './QRCode.svelte'
   import JoinLinkCard from './JoinLinkCard.svelte'
   import PresentationLaunchCard from './PresentationLaunchCard.svelte'
-  import { mockSession as session } from '../../mocks/session'
+  import { mockSession } from '../../mocks/session'
 
   interface Props {
     sessionId?: string
   }
 
   let { sessionId }: Props = $props()
+
+  const effectiveId = sessionId ?? mockSession.id
+  const joinUrl = `${window.location.origin}/join/${effectiveId}`
+
+  const session = mockSession
 </script>
 
 <PageShell class="relative overflow-hidden">
@@ -69,12 +74,12 @@
           <!-- QR card -->
           <Card elevated>
             <div class="flex flex-col items-center gap-2 px-6 pt-8 pb-6">
-              <QRCodePlaceholder />
+              <QRCode url={joinUrl} />
             </div>
           </Card>
 
           <!-- Join link card -->
-          <JoinLinkCard joinUrl={session.joinUrl} />
+          <JoinLinkCard joinUrl={joinUrl} />
         </div>
 
         <!-- Right column: presentation CTA -->

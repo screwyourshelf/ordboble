@@ -5,3 +5,4 @@
 - Revisit realtime architecture before beta: current SSE implementation polls D1 per connection and may be limited by Worker stream lifetime. Consider robust reconnect, last-event-id support, or Durable Objects if true broadcast/presence is needed.
 - Add CORS headers to Worker before deployed frontend calls API from another origin.
 - Replace VITE_CLOUD_ID dev override with URL/session routing.
+- Fix Svelte 5 reactive warning pattern: replace const effectiveId = sessionId ?? ... with $derived where sessionId props are used in ContributorMobileScreen, PresentationModeScreen and ShareScreen.
