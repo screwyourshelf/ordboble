@@ -98,6 +98,7 @@ export async function cloudEvents(cloudId: string, env: Env): Promise<Response> 
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
     },
   });
 }

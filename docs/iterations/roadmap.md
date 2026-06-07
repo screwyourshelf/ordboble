@@ -78,9 +78,15 @@ Optional:
 - [x] 015.2 — End-to-end live loop verification
   - Contributor submit → D1 → SSE → Presentation update
 
+- [>] 015.3 — API/browser integration hardening
+  - CORS headers
+  - EventSource reconnect behavior
+  - Use stable IDs as word keys
+  - Keep deployed frontend compatible with Worker API
+
 Optional:
-- [ ] 015.3 — Presence and participant tracking
-- [ ] 015.4 — Rate limiting and abuse protection
+- [ ] 015.4 — Presence and participant tracking
+- [ ] 015.5 — Rate limiting and abuse protection
 
 ---
 

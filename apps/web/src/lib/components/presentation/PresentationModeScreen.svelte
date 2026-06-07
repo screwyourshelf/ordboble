@@ -28,6 +28,7 @@
           liveWords = [
             ...liveWords,
             {
+              id: payload.id,
               word: payload.word,
               size: 'md',
               variant: 'solid',

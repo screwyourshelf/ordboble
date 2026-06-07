@@ -5,6 +5,8 @@ export type TokenDepth       = 1 | 2 | 3 | 4
 export type GlowIntensity    = 'none' | 'soft' | 'medium' | 'strong'
 
 export interface WordEntry {
+  /** Optional stable ID — used as {#each} key when present. */
+  id?: string
   word: string
   size?: TokenSize
   color?: TokenColor

@@ -50,7 +50,11 @@ export function subscribeToCloudEvents(
   })
 
   es.onerror = (e) => {
-    handlers.onError?.(e)
+    if (handlers.onError) {
+      handlers.onError(e)
+    } else {
+      console.error('[realtime] EventSource error', e)
+    }
   }
 
   return () => {

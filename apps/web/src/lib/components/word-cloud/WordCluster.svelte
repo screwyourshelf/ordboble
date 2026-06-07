@@ -19,7 +19,7 @@
 </script>
 
 <div class="relative w-full h-full {className}">
-  {#each words as entry (entry.word)}
+  {#each words as entry (entry.id ?? entry.word)}
     <div
       class="absolute {depthZMap[entry.depth ?? 1]}"
       style="left: {entry.x}%; top: {entry.y}%; transform: translate(-50%, -50%)"

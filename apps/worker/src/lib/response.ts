@@ -1,7 +1,13 @@
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 export function json<T>(data: T, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
   });
 }
 
@@ -19,4 +25,8 @@ export function internalError(message = 'Internal error'): Response {
 
 export function expired(message = 'Session expired'): Response {
   return json({ ok: false, error: { code: 'expired', message } }, 410);
+}
+
+export function preflight(): Response {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
 }

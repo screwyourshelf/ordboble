@@ -2,12 +2,17 @@ import type { Env } from './types.js';
 import { createCloud, getCloud } from './routes/clouds.js';
 import { submitWords, getWords } from './routes/words.js';
 import { cloudEvents } from './routes/events.js';
-import { json, notFound } from './lib/response.js';
+import { json, notFound, preflight } from './lib/response.js';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url);
     const method = request.method;
+
+    // Handle CORS preflight for all routes
+    if (method === 'OPTIONS') {
+      return preflight();
+    }
 
     if (pathname === '/' && method === 'GET') {
       return json({ name: 'ordboble-worker', status: 'ok' });
