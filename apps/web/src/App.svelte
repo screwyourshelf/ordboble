@@ -1,7 +1,7 @@
 <script lang="ts">
-  // Iteration 009: Temporarily showing ShareScreen prototype
-  import ShareScreen from './lib/components/share/ShareScreen.svelte'
+  // Iteration 010: Temporarily showing PresentationModeScreen prototype
+  import PresentationModeScreen from './lib/components/presentation/PresentationModeScreen.svelte'
 </script>
 
-<ShareScreen />
+<PresentationModeScreen />
 
