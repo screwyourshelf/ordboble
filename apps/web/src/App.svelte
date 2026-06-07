@@ -1,8 +1,7 @@
 <script lang="ts">
-  import PageShell from './lib/components/layout/PageShell.svelte'
-  import WordCloudHero from './lib/components/word-cloud/WordCloudHero.svelte'
+  // Iteration 008: Temporarily showing ContributorMobileScreen prototype
+  import ContributorMobileScreen from './lib/components/contributor/ContributorMobileScreen.svelte'
 </script>
 
-<PageShell>
-  <WordCloudHero />
-</PageShell>
+<ContributorMobileScreen />
+
