@@ -100,6 +100,11 @@
   }
 }
 
+/* ── Frozen word cloud: new words appear instantly, no pop-in ── */
+[data-frozen="true"] .word-pop-in {
+  animation-duration: 0.001s;
+}
+
 /* ── Word token: rotation + hover via CSS custom property ── */
 .word-token {
   transform: rotate(var(--rotation, 0deg));

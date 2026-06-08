@@ -5,9 +5,10 @@
   interface Props {
     words: WordEntry[]
     class?: string
+    frozen?: boolean
   }
 
-  let { words, class: className = '' }: Props = $props()
+  let { words, class: className = '', frozen = false }: Props = $props()
 
   // Depth 1 = foreground (highest z), depth 4 = background (lowest z)
   const depthZMap: Record<number, string> = {
@@ -18,7 +19,7 @@
   }
 </script>
 
-<div class="relative w-full h-full {className}">
+<div class="relative w-full h-full {className}" data-frozen={frozen ? 'true' : undefined}>
   {#each words as entry (entry.id ?? entry.word)}
     <div
       class="absolute {depthZMap[entry.depth ?? 1]}"

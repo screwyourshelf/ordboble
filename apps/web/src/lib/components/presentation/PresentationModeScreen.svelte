@@ -5,6 +5,7 @@
   import FloatingParticle from '../word-cloud/FloatingParticle.svelte'
   import PresentationChrome from './PresentationChrome.svelte'
   import PresentationJoinCard from './PresentationJoinCard.svelte'
+  import HostControls from './HostControls.svelte'
   import Badge from '../ui/Badge.svelte'
   import { mockSession as session } from '../../mocks/session'
   import { subscribeToCloudEvents } from '../../services/realtime'
@@ -33,6 +34,14 @@
   let notFound = $state(false)
   let reconnecting = $state(false)
 
+  // ── Host control state ──────────────────────────────────────────────────────
+  let isFullscreen = $state(false)
+  let chromeVisible = $state(true)
+  let frozen = $state(false)
+  let paused = $state(false)
+  let wordQueue: WordEntry[] = $state([])
+  let canFullscreen = $state(false)
+
   let liveWords: WordEntry[] = $state([])
 
   // Colours cycled for incoming live words
@@ -59,9 +68,62 @@
     }
   }
 
+  // ── Host control actions ────────────────────────────────────────────────────
+
+  async function toggleFullscreen() {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen()
+      } else {
+        await document.exitFullscreen()
+      }
+    } catch {
+      // Fullscreen denied or unsupported — ignore
+    }
+  }
+
+  function onFullscreenChange() {
+    isFullscreen = !!document.fullscreenElement
+  }
+
+  function togglePause() {
+    if (paused) {
+      paused = false
+      if (wordQueue.length > 0) {
+        liveWords = [...liveWords, ...wordQueue]
+        wordQueue = []
+      }
+    } else {
+      paused = true
+    }
+  }
+
+  function resetCloud() {
+    liveWords = []
+    wordQueue = []
+    colorIndex = 0
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+    if (e.metaKey || e.ctrlKey || e.altKey) return
+    switch (e.key.toLowerCase()) {
+      case 'f': toggleFullscreen(); break
+      case 'c': chromeVisible = !chromeVisible; break
+      case 'p': togglePause(); break
+      case 'r': resetCloud(); break
+    }
+  }
+
+  // ── Realtime ────────────────────────────────────────────────────────────────
+
   let unsubscribeSSE: (() => void) = () => {}
 
   onMount(async () => {
+    canFullscreen = !!document.fullscreenEnabled
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    window.addEventListener('keydown', handleKeydown)
+
     if (!env.apiBaseUrl) {
       loadingSession = false
       return
@@ -91,7 +153,12 @@
     // Start SSE only after confirming cloud exists
     unsubscribeSSE = subscribeToCloudEvents(cloudId, {
       onWordAdded(payload) {
-        liveWords = [...liveWords, wordEntryFromApi(payload.id, payload.word)]
+        const entry = wordEntryFromApi(payload.id, payload.word)
+        if (paused) {
+          wordQueue = [...wordQueue, entry]
+        } else {
+          liveWords = [...liveWords, entry]
+        }
       },
       onConnected() {
         reconnecting = false
@@ -102,7 +169,11 @@
     })
   })
 
-  onDestroy(() => unsubscribeSSE())
+  onDestroy(() => {
+    unsubscribeSSE()
+    document.removeEventListener('fullscreenchange', onFullscreenChange)
+    window.removeEventListener('keydown', handleKeydown)
+  })
 </script>
 
 <!--
@@ -139,12 +210,29 @@
     ></div>
   </div>
 
+  <!-- ── Host controls — always visible ── -->
+  <HostControls
+    {isFullscreen}
+    {chromeVisible}
+    {frozen}
+    {paused}
+    queuedCount={wordQueue.length}
+    {canFullscreen}
+    onFullscreenToggle={toggleFullscreen}
+    onChromeToggle={() => (chromeVisible = !chromeVisible)}
+    onFreezeToggle={() => (frozen = !frozen)}
+    onPauseToggle={togglePause}
+    onReset={resetCloud}
+  />
+
   <!-- ── Top chrome ── -->
+  {#if chromeVisible}
   <PresentationChrome
     title={cloudTitle}
     prompt={cloudPrompt}
     participantCount={session.participantCount}
   />
+  {/if}
 
   <!-- ── Loading overlay ── -->
   {#if loadingSession}
@@ -181,14 +269,24 @@
     </div>
   {/if}
 
+  <!-- ── Paused indicator ── -->
+  {#if paused}
+    <div class="absolute top-24 left-1/2 -translate-x-1/2 z-50" style="animation: fade-in 0.3s ease forwards;">
+      <Badge variant="neutral">
+        ⏸ {wordQueue.length > 0 ? `${wordQueue.length} ord i kø` : 'Pauset'}
+      </Badge>
+    </div>
+  {/if}
+
   <!-- ── Word cloud — center stage ── -->
   <div
     class="absolute inset-0"
-    style="top: 5%; bottom: 18%;"
+    style="top: 5%; bottom: {chromeVisible ? '18%' : '5%'};"
     aria-label="Ordsky"
   >
     <WordCluster
       words={liveWords}
+      {frozen}
       class="absolute inset-0"
     />
 
@@ -214,6 +312,7 @@
   </div>
 
   <!-- ── Bottom chrome ── -->
+  {#if chromeVisible}
   <div
     class="absolute bottom-0 left-0 right-0 z-50 pointer-events-none"
     style="background: linear-gradient(to top, rgba(7,8,22,0.90) 0%, transparent 100%)"
@@ -241,5 +340,6 @@
 
     </div>
   </div>
+  {/if}
 
 </div>

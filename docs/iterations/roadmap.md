@@ -106,11 +106,12 @@ Optional:
   - Empty/error states
   - Contributor feedback polish
 
-- [ ] 016.7 — Host presentation controls
+- [x] 016.7 — Host presentation controls
+  - Fullscreen toggle
   - Pause/resume submissions
-  - Clear/reset cloud
-  - Fullscreen controls
-  - Presentation actions
+  - Freeze cloud layout
+  - Reset/clear cloud
+  - Hide/show presentation chrome
 
 - [ ] 016.8 — Export implementation
 
