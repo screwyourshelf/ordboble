@@ -5,6 +5,7 @@
   import FloatingParticle from '../word-cloud/FloatingParticle.svelte'
   import PresentationChrome from './PresentationChrome.svelte'
   import PresentationJoinCard from './PresentationJoinCard.svelte'
+  import Badge from '../ui/Badge.svelte'
   import { mockSession as session } from '../../mocks/session'
   import { subscribeToCloudEvents } from '../../services/realtime'
   import { getCloud } from '../../services/cloud-api'
@@ -27,15 +28,23 @@
   let cloudJoinCode = $state(session.joinCode)
   let cloudJoinUrl = $state(session.joinUrl)
 
-  // Start with empty in live mode, mock composition in prototype mode
+  // UI state
+  let loadingSession = $state(!!env.apiBaseUrl)
+  let notFound = $state(false)
+  let reconnecting = $state(false)
+
   let liveWords: WordEntry[] = $state([])
 
   // Colours cycled for incoming live words
   const liveColors = ['accent', 'warm', 'success', 'primary', 'soft'] as const
   let colorIndex = 0
 
+  // Spread words across a 3×3 grid with jitter to avoid clustering
   function wordEntryFromApi(id: string, word: string): WordEntry {
     const color = liveColors[colorIndex % liveColors.length]
+    const slot = colorIndex % 9
+    const gridX = (slot % 3) * 28 + 12 + (Math.random() * 18 - 9)
+    const gridY = Math.floor(slot / 3) * 28 + 12 + (Math.random() * 18 - 9)
     colorIndex++
     return {
       id,
@@ -44,46 +53,61 @@
       variant: 'solid',
       color,
       depth: 1,
-      x: 10 + Math.random() * 80,
-      y: 10 + Math.random() * 80,
+      x: Math.max(5, Math.min(88, gridX)),
+      y: Math.max(5, Math.min(82, gridY)),
       delay: 0,
     }
   }
 
+  let unsubscribeSSE: (() => void) = () => {}
+
   onMount(async () => {
-    if (!env.apiBaseUrl) return
+    if (!env.apiBaseUrl) {
+      loadingSession = false
+      return
+    }
 
     // Load cloud metadata
     const cloudResult = await getCloud(cloudId)
-    if (cloudResult.ok) {
-      cloudTitle = cloudResult.data.title
-      cloudPrompt = cloudResult.data.prompt ?? cloudResult.data.title
-      cloudJoinCode = cloudResult.data.joinCode
-      cloudJoinUrl = `${window.location.origin}/join/${cloudId}`
+    if (!cloudResult.ok) {
+      if (cloudResult.notFound && sessionId) notFound = true
+      loadingSession = false
+      return
     }
+
+    cloudTitle = cloudResult.data.title
+    cloudPrompt = cloudResult.data.prompt ?? cloudResult.data.title
+    cloudJoinCode = cloudResult.data.joinCode
+    cloudJoinUrl = `${window.location.origin}/join/${cloudId}`
 
     // Load existing words
     const wordsResult = await getWords(cloudId)
     if (wordsResult.ok && wordsResult.data.length > 0) {
       liveWords = wordsResult.data.map((w) => wordEntryFromApi(w.id, w.word))
     }
+
+    loadingSession = false
+
+    // Start SSE only after confirming cloud exists
+    unsubscribeSSE = subscribeToCloudEvents(cloudId, {
+      onWordAdded(payload) {
+        liveWords = [...liveWords, wordEntryFromApi(payload.id, payload.word)]
+      },
+      onConnected() {
+        reconnecting = false
+      },
+      onReconnecting() {
+        reconnecting = true
+      },
+    })
   })
 
-  const unsubscribe = env.apiBaseUrl
-    ? subscribeToCloudEvents(cloudId, {
-        onWordAdded(payload) {
-          liveWords = [...liveWords, wordEntryFromApi(payload.id, payload.word)]
-        },
-      })
-    : () => { /* static prototype mode */ }
-
-  onDestroy(unsubscribe)
+  onDestroy(() => unsubscribeSSE())
 </script>
 
 <!--
   Presentation Mode Screen
   Full-viewport, dark, cinematic — for projector / large screen display.
-  Frontend-only, fake static data.
 -->
 <div
   class="relative min-h-screen w-full overflow-hidden"
@@ -122,6 +146,41 @@
     participantCount={session.participantCount}
   />
 
+  <!-- ── Loading overlay ── -->
+  {#if loadingSession}
+    <div class="absolute inset-0 z-50 flex items-center justify-center">
+      <div class="flex flex-col items-center gap-3">
+        <div class="flex gap-2" aria-label="Laster…">
+          <span class="w-2.5 h-2.5 rounded-full bg-accent" style="animation: fade-in 0.7s ease infinite alternate;"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-primary" style="animation: fade-in 0.7s ease infinite alternate; animation-delay: 0.25s;"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-warm" style="animation: fade-in 0.7s ease infinite alternate; animation-delay: 0.5s;"></span>
+        </div>
+        <p class="text-sm text-muted">Laster økt…</p>
+      </div>
+    </div>
+  {/if}
+
+  <!-- ── Not-found overlay ── -->
+  {#if notFound}
+    <div class="absolute inset-0 z-50 flex items-center justify-center" style="animation: fade-in 0.4s ease forwards;">
+      <div class="flex flex-col items-center gap-4 text-center px-8">
+        <div class="text-5xl select-none" aria-hidden="true">🔍</div>
+        <h1 class="text-2xl font-bold text-text">Økt ikke funnet</h1>
+        <p class="text-muted text-base">Lenken er ugyldig eller økten er avsluttet.</p>
+        <a href="/" class="mt-2 px-6 py-3 rounded-pill font-bold text-sm text-muted bg-white/6 border border-border hover:bg-white/10 hover:text-text transition-soft">
+          ← Tilbake til forsiden
+        </a>
+      </div>
+    </div>
+  {/if}
+
+  <!-- ── Reconnecting indicator ── -->
+  {#if reconnecting}
+    <div class="absolute top-24 left-1/2 -translate-x-1/2 z-50" style="animation: fade-in 0.3s ease forwards;">
+      <Badge variant="neutral">Kobler til igjen…</Badge>
+    </div>
+  {/if}
+
   <!-- ── Word cloud — center stage ── -->
   <div
     class="absolute inset-0"
@@ -132,6 +191,14 @@
       words={liveWords}
       class="absolute inset-0"
     />
+
+    <!-- Empty state: shown before any words arrive -->
+    {#if liveWords.length === 0 && !loadingSession && !notFound}
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none" style="animation: fade-in 0.6s ease forwards;">
+        <p class="text-text-soft text-xl font-semibold" style="animation: float-subtle 3s ease-in-out infinite;">Venter på de første ordene…</p>
+        <p class="text-muted text-sm opacity-60">Del lenken eller QR-koden nedenfor</p>
+      </div>
+    {/if}
 
     <!-- Floating ambient particles -->
     <FloatingParticle color="accent"  size="lg" x={6}  y={14} delay={0}    duration={5.0} />

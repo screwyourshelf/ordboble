@@ -11,6 +11,8 @@ export type RealtimeHandlers = {
   onConnected?: () => void
   onHeartbeat?: () => void
   onError?: (event: Event) => void
+  /** Called when the SSE connection drops and EventSource is reconnecting. */
+  onReconnecting?: () => void
 }
 
 /**
@@ -50,11 +52,10 @@ export function subscribeToCloudEvents(
   })
 
   es.onerror = (e) => {
-    if (handlers.onError) {
-      handlers.onError(e)
-    } else {
-      console.error('[realtime] EventSource error', e)
-    }
+    // EventSource reconnects automatically — call onReconnecting to let
+    // the caller show a subtle indicator. Suppress console spam.
+    handlers.onReconnecting?.()
+    handlers.onError?.(e)
   }
 
   return () => {

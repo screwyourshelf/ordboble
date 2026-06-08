@@ -27,7 +27,7 @@ export type CreateCloudResult =
 
 export type GetCloudResult =
   | { ok: true; data: CloudResponse }
-  | { ok: false; error: string }
+  | { ok: false; error: string; notFound: boolean }
 
 /**
  * Create a new word cloud session.
@@ -80,14 +80,15 @@ export async function createCloud(req: CreateCloudRequest): Promise<CreateCloudR
  */
 export async function getCloud(cloudId: string): Promise<GetCloudResult> {
   if (!env.apiBaseUrl) {
-    return { ok: false, error: 'No backend configured' }
+    return { ok: false, error: 'No backend configured', notFound: false }
   }
 
   try {
     const res = await fetch(`${env.apiBaseUrl}/api/clouds/${cloudId}`)
+    if (res.status === 404) return { ok: false, error: 'Not found', notFound: true }
     const json = (await res.json()) as GetCloudResult
     return json
   } catch {
-    return { ok: false, error: 'Nettverksfeil.' }
+    return { ok: false, error: 'Nettverksfeil.', notFound: false }
   }
 }
