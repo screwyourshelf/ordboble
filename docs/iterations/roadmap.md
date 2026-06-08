@@ -149,6 +149,13 @@ Optional:
   - Better success transitions
   - Safer viewport handling
 
+- [x] 018.2.1 — Landing and Share Composition Visibility Polish
+  - hero title readability
+  - central word readability
+  - left/right composition balance
+  - glow containment
+  - large-screen visual polish
+
 - [ ] 018.3 — Empty/loading/error polish
   - Skeleton/loading states
   - Better reconnect feel

@@ -20,15 +20,15 @@
   <!-- ── Atmospheric background ── -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
     <!-- Primary glow — top right -->
-    <div class="absolute -top-24 right-[-5%] opacity-80">
+    <div class="absolute -top-24 right-[-5%] opacity-45">
       <GlowOrb size="lg" color="primary" />
     </div>
     <!-- Accent glow — bottom left -->
-    <div class="absolute -bottom-16 left-[5%] opacity-70">
+    <div class="absolute -bottom-16 left-[5%] opacity-45">
       <GlowOrb size="md" color="accent" />
     </div>
-    <!-- Warm glow — mid center, behind word cloud -->
-    <div class="absolute top-[25%] right-[28%] opacity-50">
+    <!-- Warm glow — mid right, behind word cloud -->
+    <div class="absolute top-[25%] right-[18%] opacity-30">
       <GlowOrb size="md" color="warm" />
     </div>
     <!-- Extra depth — far bottom right -->
@@ -48,7 +48,10 @@
           <Badge variant="success">● Beta</Badge>
         </div>
 
-        <h1 class="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none">
+        <h1
+          class="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none"
+          style="filter: drop-shadow(0 2px 12px rgba(7,8,22,0.9))"
+        >
           <GradientText variant="playful">Ordboble</GradientText>
         </h1>
 
@@ -78,13 +81,13 @@
 
       <!-- ── Right: Word cloud visual ── -->
       <div
-        class="relative h-[440px] sm:h-[520px] lg:h-[620px] animate-fade-in"
+        class="relative h-[440px] sm:h-[520px] lg:h-[620px] animate-fade-in lg:max-w-[700px] lg:ml-auto [mask-image:linear-gradient(to_right,transparent_0%,black_6%)]"
         style="animation-delay: 0.15s"
       >
         <!-- Radial glow backdrop behind the cloud -->
         <div
           class="absolute inset-0 rounded-[2.5rem] pointer-events-none"
-          style="background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(124,60,255,0.13) 0%, transparent 70%)"
+          style="background: radial-gradient(ellipse 65% 60% at 54% 50%, rgba(124,60,255,0.10) 0%, transparent 70%)"
           aria-hidden="true"
         ></div>
 

@@ -6,10 +6,10 @@ import type { WordEntry, WordCloudComposition } from '../types/word-cloud'
 // ─────────────────────────────────────────────
 const heroWords: WordEntry[] = [
   // ── Hero ── dominant center, gradient + strong glow, depth 1
-  { word: 'ordboble', size: '2xl', variant: 'hero',   depth: 1, glowIntensity: 'strong', rotation: -4,  x: 50, y: 48, delay: 0 },
+  { word: 'ordboble', size: '2xl', variant: 'hero',   depth: 1, glowIntensity: 'medium', rotation: -4,  x: 50, y: 48, delay: 0 },
 
   // ── Ring 1 ── xl/lg, close orbit, solid + soft glow, depth 1
-  { word: 'kreativ',  size: 'xl',  variant: 'solid', color: 'accent',  depth: 1, glowIntensity: 'soft', rotation:  9,  x: 21, y: 30, delay: 0.10 },
+  { word: 'kreativ',  size: 'xl',  variant: 'solid', color: 'accent',  depth: 1, rotation:  9,  x: 21, y: 30, delay: 0.10 },
   { word: 'moro',     size: 'xl',  variant: 'solid', color: 'warm',    depth: 1, glowIntensity: 'soft', rotation: -13, x: 76, y: 26, delay: 0.15 },
   { word: 'glede',    size: 'lg',  variant: 'solid', color: 'success', depth: 1, glowIntensity: 'soft', rotation:  6,  x: 27, y: 67, delay: 0.20 },
   { word: 'farger',   size: 'lg',  variant: 'solid', color: 'primary', depth: 1, glowIntensity: 'soft', rotation: -9,  x: 73, y: 68, delay: 0.25 },
