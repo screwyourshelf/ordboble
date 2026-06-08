@@ -55,6 +55,11 @@
   50% { transform: translateY(-10px); }
 }
 
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0px); }
@@ -63,6 +68,16 @@
 @keyframes word-pop-in {
   from { opacity: 0; transform: translateY(6px) scale(0.92); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes word-pop-in-calm {
+  from { opacity: 0; transform: translateY(3px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1); opacity: 0.18; }
+  50%       { transform: scale(1.06); opacity: 0.10; }
 }
 
 /* ── Motion utilities ── */
@@ -91,8 +106,16 @@
     animation: float-subtle 4s ease-in-out infinite;
   }
 
+  .float-gentle {
+    animation: float-gentle 6s ease-in-out infinite;
+  }
+
   .animate-fade-in {
     animation: fade-in 0.4s ease-out both;
+  }
+
+  .pulse-ring {
+    animation: pulse-ring 3.5s ease-in-out infinite;
   }
 
   .word-pop-in {
@@ -102,6 +125,17 @@
 
 /* ── Frozen word cloud: new words appear instantly, no pop-in ── */
 [data-frozen="true"] .word-pop-in {
+  animation-duration: 0.001s;
+}
+
+/* ── Calm theme: gentler, slower word entrance ── */
+[data-theme="calm"] .word-pop-in {
+  animation-name: word-pop-in-calm;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-out;
+}
+
+[data-theme="calm"][data-frozen="true"] .word-pop-in {
   animation-duration: 0.001s;
 }
 

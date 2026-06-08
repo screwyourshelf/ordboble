@@ -134,13 +134,48 @@ Optional:
 
 # Product Polish
 
-- [ ] 018 — Product polish
-  - Mobile polish
-  - Presentation polish
-  - Accessibility pass
-  - Performance optimization
-  - Motion polish
-  - Empty/loading/error states
+- [x] 018.1 — Presentation visual polish
+  - Better spacing/composition
+  - Refined motion intensity
+  - Better cloud balance
+  - Reduced visual noise
+  - Theme-specific atmosphere
+  - Better fullscreen feel
+
+- [ ] 018.2 — Mobile contributor polish
+  - Keyboard ergonomics
+  - Better submission flow
+  - Improved touch spacing
+  - Better success transitions
+  - Safer viewport handling
+
+- [ ] 018.3 — Empty/loading/error polish
+  - Skeleton/loading states
+  - Better reconnect feel
+  - Nicer not-found states
+  - Transitional states
+  - Reduced layout jumps
+
+- [ ] 018.4 — Motion and animation polish
+  - Consistent easing
+  - Motion hierarchy
+  - Reduced animation clutter
+  - Theme-aware animation intensity
+  - Performance-friendly motion
+
+- [ ] 018.5 — Accessibility and readability
+  - Contrast pass
+  - Keyboard navigation
+  - Reduced motion support
+  - Screen-reader basics
+  - Presentation readability
+
+- [ ] 018.6 — Performance and rendering polish
+  - Reduce unnecessary rerenders
+  - Optimize word rendering
+  - Reduce layout thrash
+  - Better SSE batching if needed
+  - Mobile GPU friendliness
 
 ---
 

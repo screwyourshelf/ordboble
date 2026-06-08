@@ -55,12 +55,31 @@
 
   // Colours cycled for incoming live words
   const liveColors = ['accent', 'warm', 'success', 'primary', 'soft'] as const
+
+  // Size ladder: first words are larger (visual hierarchy), settling to md/sm
+  const sizeLadder = ['lg', 'lg', 'lg', 'md', 'md', 'md', 'md', 'md', 'sm', 'sm'] as const
+
+  // Subtle rotations for organic feel — alternating positive/negative
+  const rotations = [0, -8, 6, -4, 10, -6, 3, -10, 7, -3, 5, -7, 4, -5, 8] as const
+
   let colorIndex = 0
 
   function wordEntryFromApi(id: string, word: string): WordEntry {
     const color = liveColors[colorIndex % liveColors.length]
     const idx = colorIndex
     colorIndex++
+
+    // Size: first 3 → lg, next 5 → md, rest → sm cycling
+    const size = sizeLadder[Math.min(idx, sizeLadder.length - 1)]
+
+    // Rotation: subtle variation, cycling through preset list
+    const rotation = rotations[idx % rotations.length]
+
+    // Depth: alternate between 1 and 2 for layering, first word always foreground
+    const depth: 1 | 2 | 3 = idx === 0 ? 1 : idx % 4 === 0 ? 2 : idx % 7 === 0 ? 3 : 1
+
+    // Entry stagger: cap at 0.12s so no word waits too long
+    const delay = Math.min(idx * 0.015, 0.12)
 
     let x: number, y: number
 
@@ -69,19 +88,26 @@
       const ringSize = 8
       const ring = Math.floor(idx / ringSize)
       const posInRing = idx % ringSize
-      const rx = 30 + ring * 10
-      const ry = 22 + ring * 7
+      const rx = 28 + ring * 11
+      const ry = 20 + ring * 7
       const angle = (2 * Math.PI * posInRing) / ringSize - Math.PI / 2
-      x = Math.max(8, Math.min(88, 50 + rx * Math.cos(angle) + (Math.random() * 6 - 3)))
-      y = Math.max(8, Math.min(82, 50 + ry * Math.sin(angle) + (Math.random() * 6 - 3)))
+      x = Math.max(8, Math.min(88, 50 + rx * Math.cos(angle) + (Math.random() * 5 - 2.5)))
+      y = Math.max(8, Math.min(82, 50 + ry * Math.sin(angle) + (Math.random() * 5 - 2.5)))
     } else {
-      // Freeform: 3×3 grid with jitter
-      const slot = idx % 9
-      x = Math.max(5, Math.min(88, (slot % 3) * 28 + 12 + (Math.random() * 18 - 9)))
-      y = Math.max(5, Math.min(82, Math.floor(slot / 3) * 28 + 12 + (Math.random() * 18 - 9)))
+      // Freeform: expanded 5×4 grid so first 20 words don't cluster
+      const cols = 5
+      const rows = 4
+      const slot = idx % (cols * rows)
+      const col = slot % cols
+      const row = Math.floor(slot / cols)
+      // Cells span 14–86% horizontally, 10–80% vertically
+      const cellW = (86 - 14) / cols
+      const cellH = (80 - 10) / rows
+      x = Math.max(5, Math.min(90, 14 + col * cellW + cellW / 2 + (Math.random() * cellW * 0.5 - cellW * 0.25)))
+      y = Math.max(5, Math.min(85, 10 + row * cellH + cellH / 2 + (Math.random() * cellH * 0.5 - cellH * 0.25)))
     }
 
-    return { id, word, size: 'md', variant: 'solid', color, depth: 1, x, y, delay: 0 }
+    return { id, word, size, variant: 'solid', color, depth, x, y, rotation, delay }
   }
 
   // ── Host control actions ────────────────────────────────────────────────────
@@ -205,30 +231,32 @@
 
   <!-- ── Atmospheric glow layer ── -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <!-- Primary glow — top center -->
-    <div class="absolute -top-32 left-1/2 -translate-x-1/2 opacity-60">
+    <!-- Primary glow — top center, calm is subtler -->
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 {cloudThemeId === 'calm' ? 'opacity-35' : 'opacity-60'}">
       <GlowOrb size="lg" color={activeTheme.glowColor} />
     </div>
-    <!-- Accent — bottom left (reduced for calm) -->
-    <div class="absolute bottom-[-6rem] left-[8%] {cloudThemeId === 'calm' ? 'opacity-20' : 'opacity-50'}">
+    <!-- Accent — bottom left (heavily reduced for calm) -->
+    <div class="absolute bottom-[-6rem] left-[8%] {cloudThemeId === 'calm' ? 'opacity-10' : 'opacity-45'}">
       <GlowOrb size="lg" color="accent" />
     </div>
-    <!-- Warm orange — right (hidden for calm) -->
+    <!-- Warm orange — right (hidden for calm, reduced for dark) -->
     {#if cloudThemeId !== 'calm'}
-    <div class="absolute top-[30%] right-[-4rem] opacity-40">
+    <div class="absolute top-[30%] right-[-4rem] {cloudThemeId === 'dark' ? 'opacity-20' : 'opacity-35'}">
       <GlowOrb size="md" color="warm" />
     </div>
     {/if}
     <!-- Extra depth — bottom right -->
-    <div class="absolute bottom-0 right-[10%] opacity-30">
+    <div class="absolute bottom-0 right-[10%] {cloudThemeId === 'calm' ? 'opacity-15' : 'opacity-25'}">
       <GlowOrb size="md" color={activeTheme.glowColor} />
     </div>
     <!-- Radial depth behind cloud center -->
     <div
       class="absolute inset-0"
       style="background: {cloudThemeId === 'calm'
-        ? 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 65%)'
-        : 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,60,255,0.14) 0%, transparent 65%)'}"
+        ? 'radial-gradient(ellipse 55% 50% at 50% 50%, rgba(59,130,246,0.09) 0%, transparent 65%)'
+        : cloudThemeId === 'dark'
+          ? 'radial-gradient(ellipse 55% 50% at 50% 50%, rgba(255,255,255,0.04) 0%, transparent 65%)'
+          : 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,60,255,0.14) 0%, transparent 65%)'}"
     ></div>
   </div>
 
@@ -303,34 +331,57 @@
   <!-- ── Word cloud — center stage ── -->
   <div
     class="absolute inset-0"
-    style="top: 5%; bottom: {chromeVisible ? '18%' : '5%'};"
+    style="top: {chromeVisible ? '6%' : '2%'}; bottom: {chromeVisible ? '20%' : '2%'};"
     aria-label="Ordsky"
   >
     <WordCluster
       words={liveWords}
       {frozen}
+      themeId={cloudThemeId}
       class="absolute inset-0"
     />
 
-    <!-- Empty state: shown before any words arrive -->
+    <!-- Empty state: intentional waiting screen -->
     {#if liveWords.length === 0 && !loadingSession && !notFound}
-      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none" style="animation: fade-in 0.6s ease forwards;">
-        <p class="text-text-soft text-xl font-semibold" style="animation: float-subtle 3s ease-in-out infinite;">Venter på de første ordene…</p>
-        <p class="text-muted text-sm opacity-60">Del lenken eller QR-koden nedenfor</p>
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none" style="animation: fade-in 0.8s ease forwards;">
+        <!-- Pulsing halo ring -->
+        <div
+          class="absolute w-48 h-48 rounded-full border border-white/8 pulse-ring"
+          aria-hidden="true"
+        ></div>
+        <div
+          class="absolute w-72 h-72 rounded-full border border-white/4 pulse-ring"
+          style="animation-delay: 0.6s"
+          aria-hidden="true"
+        ></div>
+        <p
+          class="relative text-2xl font-semibold text-text-soft tracking-wide"
+          style="animation: {cloudThemeId === 'calm' ? 'float-gentle' : 'float-subtle'} {cloudThemeId === 'calm' ? '6s' : '4s'} ease-in-out infinite;"
+        >Venter på de første ordene…</p>
+        <p class="relative text-sm text-muted opacity-70 tracking-wide">Del lenken eller QR-koden nedenfor</p>
       </div>
     {/if}
 
-    <!-- Floating ambient particles -->
-    <FloatingParticle color="accent"  size="lg" x={6}  y={14} delay={0}    duration={5.0} />
-    <FloatingParticle color="primary" size="md" x={92} y={8}  delay={1.2}  duration={6.1} />
-    <FloatingParticle color="warm"    size="md" x={88} y={72} delay={0.6}  duration={4.8} />
-    <FloatingParticle color="success" size="sm" x={4}  y={80} delay={2.0}  duration={5.4} />
-    <FloatingParticle color="accent"  size="sm" x={55} y={4}  delay={0.9}  duration={4.3} />
-    <FloatingParticle color="primary" size="sm" x={18} y={92} delay={1.5}  duration={5.9} />
-    <FloatingParticle color="warm"    size="lg" x={76} y={90} delay={3.0}  duration={4.6} />
-    <FloatingParticle color="success" size="sm" x={3}  y={42} delay={0.3}  duration={6.5} />
-    <FloatingParticle color="accent"  size="md" x={96} y={48} delay={1.8}  duration={5.2} />
-    <FloatingParticle color="primary" size="sm" x={44} y={96} delay={2.4}  duration={4.1} />
+    <!-- Floating ambient particles — theme-aware count and intensity -->
+    {#if cloudThemeId === 'calm'}
+      <!-- Calm: 4 particles, slower, softer -->
+      <FloatingParticle color="primary" size="sm" x={10} y={15} delay={0}   duration={10.0} />
+      <FloatingParticle color="primary" size="sm" x={88} y={12} delay={2.5} duration={12.0} />
+      <FloatingParticle color="primary" size="sm" x={8}  y={78} delay={1.2} duration={11.0} />
+      <FloatingParticle color="primary" size="sm" x={90} y={75} delay={3.5} duration={10.5} />
+    {:else}
+      <!-- Playful/default: full particle set -->
+      <FloatingParticle color="accent"  size="lg" x={6}  y={14} delay={0}    duration={5.0} />
+      <FloatingParticle color="primary" size="md" x={92} y={8}  delay={1.2}  duration={6.1} />
+      <FloatingParticle color="warm"    size="md" x={88} y={72} delay={0.6}  duration={4.8} />
+      <FloatingParticle color="success" size="sm" x={4}  y={80} delay={2.0}  duration={5.4} />
+      <FloatingParticle color="accent"  size="sm" x={55} y={4}  delay={0.9}  duration={4.3} />
+      <FloatingParticle color="primary" size="sm" x={18} y={92} delay={1.5}  duration={5.9} />
+      <FloatingParticle color="warm"    size="lg" x={76} y={90} delay={3.0}  duration={4.6} />
+      <FloatingParticle color="success" size="sm" x={3}  y={42} delay={0.3}  duration={6.5} />
+      <FloatingParticle color="accent"  size="md" x={96} y={48} delay={1.8}  duration={5.2} />
+      <FloatingParticle color="primary" size="sm" x={44} y={96} delay={2.4}  duration={4.1} />
+    {/if}
   </div>
 
   <!-- ── Bottom chrome ── -->
