@@ -5,7 +5,14 @@
   import Badge from '../ui/Badge.svelte'
   import WordCluster from './WordCluster.svelte'
   import FloatingParticle from './FloatingParticle.svelte'
+  import CreateSessionCard from '../create/CreateSessionCard.svelte'
   import { heroComposition } from '../../word-cloud/compositions'
+
+  let showCreate = $state(false)
+
+  function openCreate() {
+    showCreate = true
+  }
 </script>
 
 <section class="relative min-h-svh overflow-hidden flex items-center">
@@ -56,9 +63,17 @@
         </p>
 
         <div class="flex flex-wrap gap-3 pt-1">
-          <Button variant="primary" size="lg">Lag ordboble ✨</Button>
-          <Button variant="secondary" size="lg">Se demo</Button>
+          {#if !showCreate}
+            <Button variant="primary" size="lg" onclick={openCreate}>Lag ordboble ✨</Button>
+            <Button variant="secondary" size="lg">Se demo</Button>
+          {/if}
         </div>
+
+        {#if showCreate}
+          <div class="animate-fade-in">
+            <CreateSessionCard />
+          </div>
+        {/if}
       </div>
 
       <!-- ── Right: Word cloud visual ── -->

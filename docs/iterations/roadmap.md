@@ -93,8 +93,9 @@ Optional:
 # Product Features
 
 - [x] 016.1 — Routing and session URL flow
-- [ ] 016.2 — QR sharing flow
-- [ ] 016.3 — Export implementation
+- [x] 016.2 — QR sharing flow
+- [ ] 016.3 — Session creation flow
+- [ ] 016.4 — Export implementation
 
 - [ ] 017 — Session customization
   - Theme persistence
