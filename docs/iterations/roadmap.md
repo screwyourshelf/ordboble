@@ -95,8 +95,28 @@ Optional:
 - [x] 016.1 — Routing and session URL flow
 - [x] 016.2 — QR sharing flow
 - [x] 016.3 — Session creation flow
-- [ ] 016.4 — Deployed Worker and production API wiring
-- [ ] 016.5 — Export implementation
+- [x] 016.4 — Deployed Worker and production API wiring
+- [x] 016.5 — Deployed join-to-presentation live loop
+
+- [x] 016.6 — Session experience refinement
+  - Better loading states
+  - Session-not-found handling
+  - Reconnect UX
+  - Duplicate word handling
+  - Empty/error states
+  - Contributor feedback polish
+
+- [ ] 016.7 — Host presentation controls
+  - Pause/resume submissions
+  - Clear/reset cloud
+  - Fullscreen controls
+  - Presentation actions
+
+- [ ] 016.8 — Export implementation
+
+---
+
+# Session Customization
 
 - [ ] 017 — Session customization
   - Theme persistence
