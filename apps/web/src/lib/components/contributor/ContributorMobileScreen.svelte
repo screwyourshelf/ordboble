@@ -92,11 +92,11 @@
 
   {#if loadingSession}
     <!-- Loading state -->
-    <div class="relative flex flex-col items-center gap-3 text-center" style="animation: fade-in 0.3s ease forwards;">
+    <div class="relative flex flex-col items-center gap-3 text-center animate-fade-in">
       <div class="flex gap-1.5" aria-label="Laster…">
-        <span class="w-2 h-2 rounded-full bg-accent opacity-80" style="animation: fade-in 0.6s ease infinite alternate; animation-delay: 0s;"></span>
-        <span class="w-2 h-2 rounded-full bg-primary opacity-80" style="animation: fade-in 0.6s ease infinite alternate; animation-delay: 0.2s;"></span>
-        <span class="w-2 h-2 rounded-full bg-warm opacity-80" style="animation: fade-in 0.6s ease infinite alternate; animation-delay: 0.4s;"></span>
+        <span class="w-2 h-2 rounded-full bg-accent animate-dot-pulse" style="animation-delay: 0s;"></span>
+        <span class="w-2 h-2 rounded-full bg-primary animate-dot-pulse" style="animation-delay: 0.2s;"></span>
+        <span class="w-2 h-2 rounded-full bg-warm animate-dot-pulse" style="animation-delay: 0.4s;"></span>
       </div>
       <p class="text-sm text-muted">Laster økt…</p>
     </div>

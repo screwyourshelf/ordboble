@@ -289,9 +289,9 @@
     <div class="absolute inset-0 z-50 flex items-center justify-center">
       <div class="flex flex-col items-center gap-3">
         <div class="flex gap-2" aria-label="Laster…">
-          <span class="w-2.5 h-2.5 rounded-full bg-accent" style="animation: fade-in 0.7s ease infinite alternate;"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-primary" style="animation: fade-in 0.7s ease infinite alternate; animation-delay: 0.25s;"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-warm" style="animation: fade-in 0.7s ease infinite alternate; animation-delay: 0.5s;"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-accent animate-dot-pulse" style="animation-delay: 0s;"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-primary animate-dot-pulse" style="animation-delay: 0.25s;"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-warm animate-dot-pulse" style="animation-delay: 0.5s;"></span>
         </div>
         <p class="text-sm text-muted">Laster økt…</p>
       </div>
@@ -312,19 +312,17 @@
     </div>
   {/if}
 
-  <!-- ── Reconnecting indicator ── -->
-  {#if reconnecting}
-    <div class="absolute top-24 left-1/2 -translate-x-1/2 z-50" style="animation: fade-in 0.3s ease forwards;">
-      <Badge variant="neutral">Kobler til igjen…</Badge>
-    </div>
-  {/if}
-
-  <!-- ── Paused indicator ── -->
-  {#if paused}
-    <div class="absolute top-24 left-1/2 -translate-x-1/2 z-50" style="animation: fade-in 0.3s ease forwards;">
-      <Badge variant="neutral">
-        ⏸ {wordQueue.length > 0 ? `${wordQueue.length} ord i kø` : 'Pauset'}
-      </Badge>
+  <!-- ── Status badges: reconnecting and/or paused, stacked ── -->
+  {#if reconnecting || paused}
+    <div class="absolute top-24 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 animate-fade-in">
+      {#if reconnecting}
+        <Badge variant="neutral">Kobler til igjen…</Badge>
+      {/if}
+      {#if paused}
+        <Badge variant="neutral">
+          ⏸ {wordQueue.length > 0 ? `${wordQueue.length} ord i kø` : 'Pauset'}
+        </Badge>
+      {/if}
     </div>
   {/if}
 

@@ -156,7 +156,7 @@ Optional:
   - glow containment
   - large-screen visual polish
 
-- [ ] 018.3 — Empty/loading/error polish
+- [x] 018.3 — Empty-loading-error polish
   - Skeleton/loading states
   - Better reconnect feel
   - Nicer not-found states

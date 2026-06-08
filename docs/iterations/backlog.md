@@ -6,6 +6,8 @@
 - Revisit realtime architecture before beta: current SSE implementation polls D1 per connection and may be limited by Worker stream lifetime. Consider robust reconnect, last-event-id support, or Durable Objects if true broadcast/presence is needed.
 - Fix Svelte 5 reactive warning pattern: replace const effectiveId = sessionId ?? ... with $derived where sessionId props are used in ContributorMobileScreen, PresentationModeScreen and ShareScreen.
 - Add calm/minimal presentation themes so host can switch between colorful playful mode and quieter professional mode.
+- Hide prototype/developer navigation in production builds.
+- Define lightweight host vs participant navigation flow before beta.
 
 ## Done / superseded
 

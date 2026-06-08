@@ -35,9 +35,11 @@
         class="block"
       />
     {:else}
-      <div class="w-[168px] h-[168px] flex items-center justify-center">
-        <span class="text-xs text-muted">Laster…</span>
-      </div>
+      <!-- Shimmer placeholder matching real QR dimensions -->
+      <div
+        class="w-[168px] h-[168px] rounded-xl bg-gray-100 animate-pulse"
+        aria-label="Laster QR-kode…"
+      ></div>
     {/if}
   </div>
 

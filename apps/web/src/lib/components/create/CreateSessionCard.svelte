@@ -71,7 +71,7 @@
     </div>
 
     {#if errorMsg}
-      <p class="text-sm text-red-400 leading-snug">{errorMsg}</p>
+      <p class="text-sm text-warm/90 leading-snug">{errorMsg}</p>
     {/if}
 
     <Button
