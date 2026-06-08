@@ -94,8 +94,9 @@ Optional:
 
 - [x] 016.1 — Routing and session URL flow
 - [x] 016.2 — QR sharing flow
-- [ ] 016.3 — Session creation flow
-- [ ] 016.4 — Export implementation
+- [x] 016.3 — Session creation flow
+- [ ] 016.4 — Deployed Worker and production API wiring
+- [ ] 016.5 — Export implementation
 
 - [ ] 017 — Session customization
   - Theme persistence
