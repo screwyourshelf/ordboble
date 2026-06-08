@@ -142,7 +142,7 @@ Optional:
   - Theme-specific atmosphere
   - Better fullscreen feel
 
-- [ ] 018.2 — Mobile contributor polish
+- [x] 018.2 — Mobile contributor polish
   - Keyboard ergonomics
   - Better submission flow
   - Improved touch spacing

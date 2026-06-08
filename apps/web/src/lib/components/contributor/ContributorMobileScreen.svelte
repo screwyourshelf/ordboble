@@ -76,7 +76,11 @@
   }
 </script>
 
-<div class="relative min-h-svh flex flex-col items-center justify-center px-6 py-12 overflow-hidden">
+<div
+  class="relative min-h-dvh flex flex-col items-center justify-center
+    px-6 py-8 overflow-x-hidden overflow-y-auto overscroll-none"
+  style="padding-bottom: max(2rem, env(safe-area-inset-bottom, 2rem))"
+>
 
   <!-- Atmospheric glow orbs (theme-aware) -->
   <div class="absolute -top-16 -right-16 pointer-events-none" aria-hidden="true">
@@ -141,7 +145,7 @@
         <SuccessConfirmation words={submittedWords} onReset={handleReset} />
       {:else}
         {#if error}
-          <p class="text-sm text-center text-red-400 px-2">{error}</p>
+          <p class="text-sm text-center text-warm/90 px-2 leading-relaxed">{error}</p>
         {/if}
         <WordInputList onSubmit={handleSubmit} loading={loading} />
       {/if}

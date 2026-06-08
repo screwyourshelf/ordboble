@@ -7,6 +7,12 @@
     id?: string
     name?: string
     type?: 'text' | 'email' | 'password' | 'search'
+    inputmode?: 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search'
+    enterkeyhint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'
+    autocomplete?: string
+    autocapitalize?: string
+    autocorrect?: string
+    spellcheck?: boolean
   }
 
   let {
@@ -17,6 +23,12 @@
     id,
     name,
     type = 'text',
+    inputmode,
+    enterkeyhint,
+    autocomplete,
+    autocapitalize,
+    autocorrect,
+    spellcheck,
   }: Props = $props()
 </script>
 
@@ -32,8 +44,14 @@
     {name}
     {type}
     {placeholder}
+    {inputmode}
+    {enterkeyhint}
+    {autocomplete}
+    {autocapitalize}
+    {autocorrect}
+    {spellcheck}
     bind:value
-    class="w-full px-4 py-3 rounded-2xl border border-border bg-white/7 text-text
+    class="w-full px-4 py-3.5 rounded-2xl border border-border bg-white/7 text-text
       placeholder:text-muted outline-none
       focus:border-primary/60 focus:ring-2 focus:ring-primary/20
       transition-colors duration-200"

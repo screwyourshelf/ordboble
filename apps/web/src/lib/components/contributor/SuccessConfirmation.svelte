@@ -11,13 +11,13 @@
   let { words, onReset }: Props = $props()
 </script>
 
-<div class="flex flex-col gap-5 text-center" style="animation: fade-in 0.4s ease forwards;">
+<div class="flex flex-col gap-5 text-center animate-scale-in">
   <div class="text-6xl select-none" aria-hidden="true">🎉</div>
 
   <Card elevated>
     <div class="flex flex-col gap-4 p-6">
-      <p class="text-xl font-bold text-text">Takk for bidragene dine!</p>
-      <p class="text-sm text-muted">Du sendte inn disse ordene:</p>
+      <p class="text-xl font-bold text-text">Sendt til ordskyen!</p>
+      <p class="text-sm text-muted">Du sendte inn:</p>
 
       <div class="flex flex-wrap gap-2 justify-center">
         {#each words as word}
@@ -25,13 +25,13 @@
         {/each}
       </div>
 
-      <p class="text-xs text-muted mt-1">
+      <p class="text-xs text-muted mt-1 opacity-80">
         Ordene dine er nå en del av ordskyen ✨
       </p>
     </div>
   </Card>
 
-  <Button variant="ghost" size="md" onclick={onReset}>
+  <Button variant="secondary" size="md" onclick={onReset}>
     Legg til flere ord
   </Button>
 </div>
