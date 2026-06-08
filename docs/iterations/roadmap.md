@@ -163,7 +163,7 @@ Optional:
   - Transitional states
   - Reduced layout jumps
 
-- [ ] 018.4 — Motion and animation polish
+- [x] 018.4 — Motion and animation polish
   - Consistent easing
   - Motion hierarchy
   - Reduced animation clutter

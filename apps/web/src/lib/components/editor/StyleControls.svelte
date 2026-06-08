@@ -37,7 +37,7 @@
       {#each densityOptions as opt (opt.id)}
         {@const active = style.density === opt.id}
         <button
-          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 cursor-pointer border-0
+          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-[background-color,color] duration-150 cursor-pointer border-0
             {active
               ? 'bg-primary/20 text-primary'
               : 'bg-white/5 text-muted hover:bg-white/10 hover:text-text-soft'}"
@@ -55,7 +55,7 @@
       {#each wordSizeOptions as opt (opt.id)}
         {@const active = style.wordSize === opt.id}
         <button
-          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 cursor-pointer border-0
+          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-[background-color,color] duration-150 cursor-pointer border-0
             {active
               ? 'bg-accent/20 text-accent'
               : 'bg-white/5 text-muted hover:bg-white/10 hover:text-text-soft'}"
@@ -73,7 +73,7 @@
       {#each glowOptions as opt (opt.id)}
         {@const active = style.glow === opt.id}
         <button
-          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 cursor-pointer border-0
+          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-[background-color,color] duration-150 cursor-pointer border-0
             {active
               ? 'bg-warm/20 text-warm'
               : 'bg-white/5 text-muted hover:bg-white/10 hover:text-text-soft'}"

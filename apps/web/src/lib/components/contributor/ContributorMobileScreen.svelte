@@ -103,7 +103,7 @@
 
   {:else if notFound}
     <!-- Not-found state -->
-    <div class="relative w-full max-w-sm flex flex-col items-center gap-6 text-center" style="animation: fade-in 0.4s ease forwards;">
+    <div class="relative w-full max-w-sm flex flex-col items-center gap-6 text-center animate-fade-in">
       <div class="text-5xl select-none" aria-hidden="true">🔍</div>
       <div class="flex flex-col gap-2">
         <h1 class="text-xl font-bold text-text">Økt ikke funnet</h1>

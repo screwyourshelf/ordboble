@@ -11,7 +11,7 @@
 <button
   disabled={!option.enabled}
   class="flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold
-    transition-all duration-150 w-full text-left
+    transition-[background-color,border-color,color,opacity] duration-150 w-full text-left
     {option.enabled
       ? 'border-white/16 bg-white/6 text-text-soft cursor-pointer hover:bg-white/10 hover:text-text'
       : 'border-white/8 bg-white/3 text-muted cursor-not-allowed opacity-50 select-none'}"

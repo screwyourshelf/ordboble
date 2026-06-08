@@ -23,7 +23,7 @@
       >
         <!-- Color swatch -->
         <div
-          class="w-full aspect-square rounded-xl transition-all duration-200
+          class="w-full aspect-square rounded-xl transition-[transform,box-shadow,opacity] duration-200
             {isSelected ? 'ring-2 ring-offset-2 ring-offset-transparent scale-105' : 'opacity-70 hover:opacity-90 hover:scale-105'}"
           style="background: {theme.swatch}; {isSelected ? `ring-color: ${theme.ring}` : ''};
             box-shadow: {isSelected ? `0 0 16px ${theme.ring}55` : 'none'}"

@@ -16,7 +16,7 @@
     {#each shapes as shape (shape.id)}
       {@const isSelected = selected === shape.id}
       <button
-        class="flex items-center gap-2 px-3 py-2.5 rounded-xl border transition-all duration-150 cursor-pointer text-left
+        class="flex items-center gap-2 px-3 py-2.5 rounded-xl border transition-[background-color,border-color,color,opacity] duration-150 cursor-pointer text-left
           {isSelected
             ? 'bg-primary/15 border-primary/40 text-primary'
             : 'bg-white/4 border-white/8 text-muted hover:bg-white/8 hover:border-white/16 hover:text-text-soft'}"

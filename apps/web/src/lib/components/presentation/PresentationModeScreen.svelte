@@ -300,7 +300,7 @@
 
   <!-- ── Not-found overlay ── -->
   {#if notFound}
-    <div class="absolute inset-0 z-50 flex items-center justify-center" style="animation: fade-in 0.4s ease forwards;">
+    <div class="absolute inset-0 z-50 flex items-center justify-center animate-fade-in">
       <div class="flex flex-col items-center gap-4 text-center px-8">
         <div class="text-5xl select-none" aria-hidden="true">🔍</div>
         <h1 class="text-2xl font-bold text-text">Økt ikke funnet</h1>
@@ -330,6 +330,7 @@
   <div
     class="absolute inset-0"
     style="top: {chromeVisible ? '6%' : '2%'}; bottom: {chromeVisible ? '20%' : '2%'};"
+    data-theme={cloudThemeId}
     aria-label="Ordsky"
   >
     <WordCluster
@@ -341,7 +342,7 @@
 
     <!-- Empty state: intentional waiting screen -->
     {#if liveWords.length === 0 && !loadingSession && !notFound}
-      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none" style="animation: fade-in 0.8s ease forwards;">
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none animate-fade-in-slow">
         <!-- Pulsing halo ring -->
         <div
           class="absolute w-48 h-48 rounded-full border border-white/8 pulse-ring"
