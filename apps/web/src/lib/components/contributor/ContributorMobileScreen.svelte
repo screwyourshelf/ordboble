@@ -8,6 +8,8 @@
   import { mockSession as session } from '../../mocks/session'
   import { submitWords } from '../../services/word-api'
   import { getCloud } from '../../services/cloud-api'
+  import { getTheme } from '../../design/themes'
+  import type { ThemeId } from '../../types/theme'
   import env from '../../config/env'
 
   interface Props {
@@ -21,6 +23,9 @@
 
   let cloudTitle = $state(session.title)
   let cloudPrompt = $state(session.prompt)
+  let cloudThemeId = $state<ThemeId>('playful')
+
+  const activeTheme = $derived(getTheme(cloudThemeId))
 
   // Show loading only when we will actually call the API
   let loadingSession = $state(!!env.apiBaseUrl)
@@ -40,6 +45,7 @@
     if (result.ok) {
       cloudTitle = result.data.title
       cloudPrompt = result.data.prompt ?? result.data.title
+      cloudThemeId = (result.data.themeId as ThemeId) ?? 'playful'
     } else if (result.notFound && sessionId) {
       // Real route ID provided but cloud does not exist — do NOT fall back to mock
       notFound = true
@@ -72,12 +78,12 @@
 
 <div class="relative min-h-svh flex flex-col items-center justify-center px-6 py-12 overflow-hidden">
 
-  <!-- Atmospheric glow orbs -->
+  <!-- Atmospheric glow orbs (theme-aware) -->
   <div class="absolute -top-16 -right-16 pointer-events-none" aria-hidden="true">
-    <GlowOrb size="md" color="accent" />
+    <GlowOrb size="md" color={cloudThemeId === 'calm' ? 'primary' : 'accent'} />
   </div>
   <div class="absolute -bottom-16 -left-16 pointer-events-none" aria-hidden="true">
-    <GlowOrb size="sm" color="primary" />
+    <GlowOrb size="sm" color={activeTheme.glowColor} />
   </div>
 
   {#if loadingSession}

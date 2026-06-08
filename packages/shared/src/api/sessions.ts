@@ -4,6 +4,8 @@ export type CreateSessionRequest = {
   language?: string;
   maxWordsPerClient?: number;
   liveEnabled?: boolean;
+  themeId?: string;
+  shapeId?: string;
 };
 
 export type SessionResponse = {
@@ -16,4 +18,6 @@ export type SessionResponse = {
   liveEnabled: boolean;
   createdAt: string;
   expiresAt?: string;
+  themeId: string;
+  shapeId: string;
 };

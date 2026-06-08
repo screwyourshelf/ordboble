@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import PageShell from '../layout/PageShell.svelte'
   import Container from '../layout/Container.svelte'
   import GlowOrb from '../ui/GlowOrb.svelte'
@@ -10,6 +11,10 @@
   import JoinLinkCard from './JoinLinkCard.svelte'
   import PresentationLaunchCard from './PresentationLaunchCard.svelte'
   import { mockSession } from '../../mocks/session'
+  import { getCloud } from '../../services/cloud-api'
+  import { getTheme } from '../../design/themes'
+  import type { ThemeId } from '../../types/theme'
+  import env from '../../config/env'
 
   interface Props {
     sessionId?: string
@@ -20,22 +25,39 @@
   const effectiveId = sessionId ?? mockSession.id
   const joinUrl = `${window.location.origin}/join/${effectiveId}`
 
-  const session = mockSession
+  // Session metadata — loaded from API when available, prototype fallback otherwise
+  let sessionTitle = $state(mockSession.title)
+  let sessionPrompt = $state(mockSession.prompt)
+  let sessionJoinCode = $state(mockSession.joinCode)
+  let sessionThemeId = $state<ThemeId>('playful')
+
+  const activeTheme = $derived(getTheme(sessionThemeId))
+
+  onMount(async () => {
+    if (!env.apiBaseUrl || !sessionId) return
+    const result = await getCloud(effectiveId)
+    if (result.ok) {
+      sessionTitle = result.data.title
+      sessionPrompt = result.data.prompt ?? result.data.title
+      sessionJoinCode = result.data.joinCode
+      sessionThemeId = (result.data.themeId as ThemeId) ?? 'playful'
+    }
+  })
 </script>
 
 <PageShell class="relative overflow-hidden">
-  <!-- Atmospheric glow orbs -->
+  <!-- Atmospheric glow orbs (theme-aware) -->
   <div
     class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 pointer-events-none"
     aria-hidden="true"
   >
-    <GlowOrb size="lg" color="accent" />
+    <GlowOrb size="lg" color={sessionThemeId === 'calm' ? 'primary' : 'accent'} />
   </div>
   <div
     class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 pointer-events-none"
     aria-hidden="true"
   >
-    <GlowOrb size="md" color="primary" />
+    <GlowOrb size="md" color={activeTheme.glowColor} />
   </div>
 
   <Container variant="wide">
@@ -46,18 +68,18 @@
         <!-- Eyebrow row -->
         <div class="flex items-center gap-3 flex-wrap">
           <Eyebrow accent>Session aktiv</Eyebrow>
-          <Badge variant="success">● {session.participantCount} deltakere</Badge>
-          <Badge variant="neutral">Kode: {session.joinCode}</Badge>
+          <Badge variant="success">● {mockSession.participantCount} deltakere</Badge>
+          <Badge variant="neutral">Kode: {sessionJoinCode}</Badge>
         </div>
 
         <!-- Title -->
         <h1 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight text-text">
-          <GradientText>{session.title}</GradientText>
+          <GradientText>{sessionTitle}</GradientText>
         </h1>
 
         <!-- Prompt -->
         <p class="text-base sm:text-lg text-text-soft max-w-xl leading-relaxed">
-          {session.prompt}
+          {sessionPrompt}
         </p>
       </header>
 

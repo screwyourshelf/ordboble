@@ -7,6 +7,8 @@ export type CreateCloudRequest = {
   language?: string
   maxWordsPerClient?: number
   liveEnabled?: boolean
+  themeId?: string
+  shapeId?: string
 }
 
 export type CloudResponse = {
@@ -19,6 +21,8 @@ export type CloudResponse = {
   liveEnabled: boolean
   createdAt: string
   expiresAt?: string
+  themeId: string
+  shapeId: string
 }
 
 export type CreateCloudResult =
@@ -50,6 +54,8 @@ export async function createCloud(req: CreateCloudRequest): Promise<CreateCloudR
         maxWordsPerClient: req.maxWordsPerClient ?? 5,
         liveEnabled: req.liveEnabled ?? true,
         createdAt: new Date().toISOString(),
+        themeId: req.themeId ?? 'playful',
+        shapeId: req.shapeId ?? 'freeform',
       },
     }
   }

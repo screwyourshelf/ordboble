@@ -9,6 +9,8 @@ export type WordCloudRow = {
   max_words_per_client: number;
   live_enabled: number; // stored as 0/1 in SQLite
   created_at: string;
+  theme_id: string;
+  shape_id: string;
 };
 
 /** D1 row shape for the word_submissions table. */

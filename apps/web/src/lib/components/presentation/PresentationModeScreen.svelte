@@ -11,7 +11,10 @@
   import { subscribeToCloudEvents } from '../../services/realtime'
   import { getCloud } from '../../services/cloud-api'
   import { getWords } from '../../services/word-api'
+  import { getTheme } from '../../design/themes'
   import type { WordEntry } from '../../types/word-cloud'
+  import type { ThemeId } from '../../types/theme'
+  import type { ShapeId } from '../../types/shape'
   import env from '../../config/env'
 
   interface Props {
@@ -34,6 +37,12 @@
   let notFound = $state(false)
   let reconnecting = $state(false)
 
+  // ── Theme / shape (loaded from API, with prototype fallback) ────────────────
+  let cloudThemeId = $state<ThemeId>('playful')
+  let cloudShapeId = $state<ShapeId>('freeform')
+
+  const activeTheme = $derived(getTheme(cloudThemeId))
+
   // ── Host control state ──────────────────────────────────────────────────────
   let isFullscreen = $state(false)
   let chromeVisible = $state(true)
@@ -48,24 +57,31 @@
   const liveColors = ['accent', 'warm', 'success', 'primary', 'soft'] as const
   let colorIndex = 0
 
-  // Spread words across a 3×3 grid with jitter to avoid clustering
   function wordEntryFromApi(id: string, word: string): WordEntry {
     const color = liveColors[colorIndex % liveColors.length]
-    const slot = colorIndex % 9
-    const gridX = (slot % 3) * 28 + 12 + (Math.random() * 18 - 9)
-    const gridY = Math.floor(slot / 3) * 28 + 12 + (Math.random() * 18 - 9)
+    const idx = colorIndex
     colorIndex++
-    return {
-      id,
-      word,
-      size: 'md',
-      variant: 'solid',
-      color,
-      depth: 1,
-      x: Math.max(5, Math.min(88, gridX)),
-      y: Math.max(5, Math.min(82, gridY)),
-      delay: 0,
+
+    let x: number, y: number
+
+    if (cloudShapeId === 'circle') {
+      // Words arranged along an ellipse, growing outward in rings
+      const ringSize = 8
+      const ring = Math.floor(idx / ringSize)
+      const posInRing = idx % ringSize
+      const rx = 30 + ring * 10
+      const ry = 22 + ring * 7
+      const angle = (2 * Math.PI * posInRing) / ringSize - Math.PI / 2
+      x = Math.max(8, Math.min(88, 50 + rx * Math.cos(angle) + (Math.random() * 6 - 3)))
+      y = Math.max(8, Math.min(82, 50 + ry * Math.sin(angle) + (Math.random() * 6 - 3)))
+    } else {
+      // Freeform: 3×3 grid with jitter
+      const slot = idx % 9
+      x = Math.max(5, Math.min(88, (slot % 3) * 28 + 12 + (Math.random() * 18 - 9)))
+      y = Math.max(5, Math.min(82, Math.floor(slot / 3) * 28 + 12 + (Math.random() * 18 - 9)))
     }
+
+    return { id, word, size: 'md', variant: 'solid', color, depth: 1, x, y, delay: 0 }
   }
 
   // ── Host control actions ────────────────────────────────────────────────────
@@ -141,6 +157,8 @@
     cloudPrompt = cloudResult.data.prompt ?? cloudResult.data.title
     cloudJoinCode = cloudResult.data.joinCode
     cloudJoinUrl = `${window.location.origin}/join/${cloudId}`
+    cloudThemeId = (cloudResult.data.themeId as ThemeId) ?? 'playful'
+    cloudShapeId = (cloudResult.data.shapeId as ShapeId) ?? 'freeform'
 
     // Load existing words
     const wordsResult = await getWords(cloudId)
@@ -182,31 +200,35 @@
 -->
 <div
   class="relative min-h-screen w-full overflow-hidden"
-  style="background: radial-gradient(ellipse 110% 90% at 50% 55%, rgba(124,60,255,0.18) 0%, rgba(255,79,163,0.10) 40%, #070816 75%)"
+  style="background: {activeTheme.previewBg}"
 >
 
   <!-- ── Atmospheric glow layer ── -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <!-- Deep purple — top center -->
+    <!-- Primary glow — top center -->
     <div class="absolute -top-32 left-1/2 -translate-x-1/2 opacity-60">
-      <GlowOrb size="lg" color="primary" />
+      <GlowOrb size="lg" color={activeTheme.glowColor} />
     </div>
-    <!-- Accent pink — bottom left -->
-    <div class="absolute bottom-[-6rem] left-[8%] opacity-50">
+    <!-- Accent — bottom left (reduced for calm) -->
+    <div class="absolute bottom-[-6rem] left-[8%] {cloudThemeId === 'calm' ? 'opacity-20' : 'opacity-50'}">
       <GlowOrb size="lg" color="accent" />
     </div>
-    <!-- Warm orange — right -->
+    <!-- Warm orange — right (hidden for calm) -->
+    {#if cloudThemeId !== 'calm'}
     <div class="absolute top-[30%] right-[-4rem] opacity-40">
       <GlowOrb size="md" color="warm" />
     </div>
+    {/if}
     <!-- Extra depth — bottom right -->
     <div class="absolute bottom-0 right-[10%] opacity-30">
-      <GlowOrb size="md" color="primary" />
+      <GlowOrb size="md" color={activeTheme.glowColor} />
     </div>
     <!-- Radial depth behind cloud center -->
     <div
       class="absolute inset-0"
-      style="background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,60,255,0.14) 0%, transparent 65%)"
+      style="background: {cloudThemeId === 'calm'
+        ? 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 65%)'
+        : 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,60,255,0.14) 0%, transparent 65%)'}"
     ></div>
   </div>
 

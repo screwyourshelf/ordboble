@@ -119,7 +119,7 @@ Optional:
 
 # Session Customization
 
-- [ ] 017 — Session customization
+- [x] 017 — Session customization
   - Theme persistence
   - Shape rendering system
   - Presentation controls

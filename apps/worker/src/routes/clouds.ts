@@ -10,6 +10,8 @@ type CreateCloudRequest = {
   language?: string;
   maxWordsPerClient?: number;
   liveEnabled?: boolean;
+  themeId?: string;
+  shapeId?: string;
 };
 
 type CloudResponse = {
@@ -22,6 +24,8 @@ type CloudResponse = {
   liveEnabled: boolean;
   createdAt: string;
   expiresAt?: string;
+  themeId: string;
+  shapeId: string;
 };
 
 function rowToResponse(row: WordCloudRow): CloudResponse {
@@ -35,6 +39,8 @@ function rowToResponse(row: WordCloudRow): CloudResponse {
     liveEnabled: row.live_enabled === 1,
     createdAt: row.created_at,
     ...(row.expires_at !== null ? { expiresAt: row.expires_at } : {}),
+    themeId: row.theme_id ?? 'playful',
+    shapeId: row.shape_id ?? 'freeform',
   };
 }
 
@@ -60,14 +66,16 @@ export async function createCloud(request: Request, env: Env): Promise<Response>
   const language = req.language ?? 'no';
   const maxWordsPerClient = typeof req.maxWordsPerClient === 'number' ? req.maxWordsPerClient : 5;
   const liveEnabled = req.liveEnabled !== false;
+  const themeId = typeof req.themeId === 'string' && req.themeId.trim() ? req.themeId.trim() : 'playful';
+  const shapeId = typeof req.shapeId === 'string' && req.shapeId.trim() ? req.shapeId.trim() : 'freeform';
 
   try {
     await env.DB.prepare(
       `INSERT INTO word_clouds
-         (id, title, prompt, language, join_code, expires_at, max_words_per_client, live_enabled, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+         (id, title, prompt, language, join_code, expires_at, max_words_per_client, live_enabled, created_at, theme_id, shape_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
-      .bind(id, title, prompt, language, joinCode, null, maxWordsPerClient, liveEnabled ? 1 : 0, now)
+      .bind(id, title, prompt, language, joinCode, null, maxWordsPerClient, liveEnabled ? 1 : 0, now, themeId, shapeId)
       .run();
   } catch {
     return internalError('Failed to create cloud');
@@ -83,6 +91,8 @@ export async function createCloud(request: Request, env: Env): Promise<Response>
     max_words_per_client: maxWordsPerClient,
     live_enabled: liveEnabled ? 1 : 0,
     created_at: now,
+    theme_id: themeId,
+    shape_id: shapeId,
   };
 
   return json({ ok: true, data: rowToResponse(row) }, 201);
