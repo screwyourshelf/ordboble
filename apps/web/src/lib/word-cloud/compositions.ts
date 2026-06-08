@@ -5,9 +5,6 @@ import type { WordEntry, WordCloudComposition } from '../types/word-cloud'
 // Full-featured, 20 words, landing page context
 // ─────────────────────────────────────────────
 const heroWords: WordEntry[] = [
-  // ── Hero ── dominant center, gradient + strong glow, depth 1
-  { word: 'ordboble', size: '2xl', variant: 'hero',   depth: 1, glowIntensity: 'medium', rotation: -4,  x: 50, y: 48, delay: 0 },
-
   // ── Ring 1 ── xl/lg, close orbit, solid + soft glow, depth 1
   { word: 'kreativ',  size: 'xl',  variant: 'solid', color: 'accent',  depth: 1, rotation:  9,  x: 21, y: 30, delay: 0.10 },
   { word: 'moro',     size: 'xl',  variant: 'solid', color: 'warm',    depth: 1, glowIntensity: 'soft', rotation: -13, x: 76, y: 26, delay: 0.15 },

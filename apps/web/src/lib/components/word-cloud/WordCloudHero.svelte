@@ -2,7 +2,6 @@
   import GlowOrb from '../ui/GlowOrb.svelte'
   import GradientText from '../ui/GradientText.svelte'
   import Button from '../ui/Button.svelte'
-  import Badge from '../ui/Badge.svelte'
   import WordCluster from './WordCluster.svelte'
   import FloatingParticle from './FloatingParticle.svelte'
   import CreateSessionCard from '../create/CreateSessionCard.svelte'
@@ -43,14 +42,8 @@
 
       <!-- ── Left: Hero copy ── -->
       <div class="flex flex-col gap-7 animate-fade-in">
-        <div class="flex items-center gap-2">
-          <Badge variant="accent">✨ Live</Badge>
-          <Badge variant="success">● Beta</Badge>
-        </div>
-
         <h1
           class="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none"
-          style="filter: drop-shadow(0 2px 12px rgba(7,8,22,0.9))"
         >
           <GradientText variant="playful">Ordboble</GradientText>
         </h1>
@@ -61,14 +54,13 @@
         </p>
 
         <p class="text-base text-muted leading-relaxed max-w-sm">
-          Del en lenke, samle ord fra publikum og se ordskyen vokse i sanntid.
-          Perfekt til workshops, klasser og presentasjoner.
+          Del en lenke — se ordene strømme inn og ordskyen ta form i sanntid.
+          Ingen app, ingen konto. Bare ord som lever.
         </p>
 
         <div class="flex flex-wrap gap-3 pt-1">
           {#if !showCreate}
-            <Button variant="primary" size="lg" onclick={openCreate}>Lag ordboble ✨</Button>
-            <Button variant="secondary" size="lg">Se demo</Button>
+            <Button variant="primary" size="lg" onclick={openCreate}>Start din ordboble</Button>
           {/if}
         </div>
 
@@ -81,7 +73,7 @@
 
       <!-- ── Right: Word cloud visual ── -->
       <div
-        class="relative h-[440px] sm:h-[520px] lg:h-[620px] animate-fade-in lg:max-w-[700px] lg:ml-auto [mask-image:linear-gradient(to_right,transparent_0%,black_6%)]"
+        class="relative h-[440px] sm:h-[520px] lg:h-[620px] lg:w-full animate-fade-in lg:max-w-[700px] lg:ml-auto [mask-image:linear-gradient(to_right,transparent_0%,black_6%)]"
         style="animation-delay: 0.15s"
       >
         <!-- Radial glow backdrop behind the cloud -->
@@ -90,6 +82,20 @@
           style="background: radial-gradient(ellipse 65% 60% at 54% 50%, rgba(124,60,255,0.10) 0%, transparent 70%)"
           aria-hidden="true"
         ></div>
+
+        <!-- Central glow explosion -->
+        <div
+          class="absolute pointer-events-none"
+          style="left: 50%; top: 48%; transform: translate(-50%, -50%); width: 320px; height: 320px;"
+          aria-hidden="true"
+        >
+          <!-- Outer halo -->
+          <div class="absolute inset-0 rounded-full" style="background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255,79,163,0.04) 0%, rgba(141,77,255,0.03) 40%, transparent 70%); filter: blur(18px);"></div>
+          <!-- Mid ring -->
+          <div class="absolute inset-[15%] rounded-full" style="background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(255,122,47,0.05) 0%, rgba(255,79,163,0.04) 35%, rgba(141,77,255,0.02) 60%, transparent 80%); filter: blur(10px);"></div>
+          <!-- Hot core -->
+          <div class="absolute inset-[35%] rounded-full" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.09) 0%, rgba(255,122,47,0.08) 30%, rgba(255,79,163,0.04) 60%, transparent 85%); filter: blur(4px);"></div>
+        </div>
 
         <!-- The word cluster -->
         <WordCluster words={heroComposition.words} class="absolute inset-0" />

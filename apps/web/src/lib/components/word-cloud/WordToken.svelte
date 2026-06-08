@@ -80,11 +80,19 @@
     glowIntensity ?? (glow ? 'medium' : 'none')
   )
 
-  // Color class — variant determines gradient vs solid color
-  const colorClass = $derived(
+  // Color class — only used for non-gradient variants
+  const isGradientVariant = $derived(
     effectiveVariant === 'hero' || effectiveVariant === 'gradient'
-      ? '[background:var(--gradient-logo)] bg-clip-text text-transparent'
-      : colorMap[color]
+  )
+
+  const colorClass = $derived(
+    isGradientVariant ? '' : colorMap[color]
+  )
+
+  const gradientStyle = $derived(
+    isGradientVariant
+      ? 'background: var(--gradient-logo); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'
+      : ''
   )
 
   // Combined opacity (variant prominence × depth layer)
@@ -120,7 +128,7 @@
       {fontSizeMap[size]}
       {colorClass}
       {glowClassMap[effectiveGlow]}"
-    style="--rotation: {rotation}deg; {glowColorVar} opacity: {tokenOpacity}"
+    style="--rotation: {rotation}deg; {glowColorVar} opacity: {tokenOpacity}; {gradientStyle}"
   >
     {word}
   </span>
