@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import GlowOrb from '../ui/GlowOrb.svelte'
   import WordCluster from '../word-cloud/WordCluster.svelte'
   import FloatingParticle from '../word-cloud/FloatingParticle.svelte'
   import PresentationChrome from './PresentationChrome.svelte'
   import PresentationJoinCard from './PresentationJoinCard.svelte'
-  import { presentationComposition } from '../../word-cloud/compositions'
   import { mockSession as session } from '../../mocks/session'
   import { subscribeToCloudEvents } from '../../services/realtime'
+  import { getCloud } from '../../services/cloud-api'
+  import { getWords } from '../../services/word-api'
   import type { WordEntry } from '../../types/word-cloud'
   import env from '../../config/env'
 
@@ -20,32 +21,58 @@
   // Priority: route session id → env override → mock fallback
   const cloudId = sessionId || env.cloudId || session.id
 
-  // Start with static composition; append live words on top
-  let liveWords: WordEntry[] = $state([...presentationComposition.words])
+  // Cloud metadata — updated from API when available
+  let cloudTitle = $state(session.title)
+  let cloudPrompt = $state(session.prompt)
+  let cloudJoinCode = $state(session.joinCode)
+  let cloudJoinUrl = $state(session.joinUrl)
+
+  // Start with empty in live mode, mock composition in prototype mode
+  let liveWords: WordEntry[] = $state([])
 
   // Colours cycled for incoming live words
   const liveColors = ['accent', 'warm', 'success', 'primary', 'soft'] as const
   let colorIndex = 0
 
+  function wordEntryFromApi(id: string, word: string): WordEntry {
+    const color = liveColors[colorIndex % liveColors.length]
+    colorIndex++
+    return {
+      id,
+      word,
+      size: 'md',
+      variant: 'solid',
+      color,
+      depth: 1,
+      x: 10 + Math.random() * 80,
+      y: 10 + Math.random() * 80,
+      delay: 0,
+    }
+  }
+
+  onMount(async () => {
+    if (!env.apiBaseUrl) return
+
+    // Load cloud metadata
+    const cloudResult = await getCloud(cloudId)
+    if (cloudResult.ok) {
+      cloudTitle = cloudResult.data.title
+      cloudPrompt = cloudResult.data.prompt ?? cloudResult.data.title
+      cloudJoinCode = cloudResult.data.joinCode
+      cloudJoinUrl = `${window.location.origin}/join/${cloudId}`
+    }
+
+    // Load existing words
+    const wordsResult = await getWords(cloudId)
+    if (wordsResult.ok && wordsResult.data.length > 0) {
+      liveWords = wordsResult.data.map((w) => wordEntryFromApi(w.id, w.word))
+    }
+  })
+
   const unsubscribe = env.apiBaseUrl
     ? subscribeToCloudEvents(cloudId, {
         onWordAdded(payload) {
-          const color = liveColors[colorIndex % liveColors.length]
-          colorIndex++
-          liveWords = [
-            ...liveWords,
-            {
-              id: payload.id,
-              word: payload.word,
-              size: 'md',
-              variant: 'solid',
-              color,
-              depth: 1,
-              x: 10 + Math.random() * 80,
-              y: 10 + Math.random() * 80,
-              delay: 0,
-            },
-          ]
+          liveWords = [...liveWords, wordEntryFromApi(payload.id, payload.word)]
         },
       })
     : () => { /* static prototype mode */ }
@@ -90,8 +117,8 @@
 
   <!-- ── Top chrome ── -->
   <PresentationChrome
-    title={session.title}
-    prompt={session.prompt}
+    title={cloudTitle}
+    prompt={cloudPrompt}
     participantCount={session.participantCount}
   />
 
@@ -140,8 +167,8 @@
       <!-- Right: join card -->
       <div class="pointer-events-auto shrink-0">
         <PresentationJoinCard
-          joinCode={session.joinCode}
-          joinUrl={session.joinUrl}
+          joinCode={cloudJoinCode}
+          joinUrl={cloudJoinUrl}
         />
       </div>
 

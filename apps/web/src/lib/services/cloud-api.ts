@@ -25,6 +25,10 @@ export type CreateCloudResult =
   | { ok: true; data: CloudResponse }
   | { ok: false; error: string }
 
+export type GetCloudResult =
+  | { ok: true; data: CloudResponse }
+  | { ok: false; error: string }
+
 /**
  * Create a new word cloud session.
  *
@@ -66,5 +70,24 @@ export async function createCloud(req: CreateCloudRequest): Promise<CreateCloudR
     return json
   } catch {
     return { ok: false, error: 'Nettverksfeil. Sjekk tilkoblingen og prøv igjen.' }
+  }
+}
+
+/**
+ * Fetch cloud metadata by ID.
+ *
+ * Falls back silently if apiBaseUrl is not configured.
+ */
+export async function getCloud(cloudId: string): Promise<GetCloudResult> {
+  if (!env.apiBaseUrl) {
+    return { ok: false, error: 'No backend configured' }
+  }
+
+  try {
+    const res = await fetch(`${env.apiBaseUrl}/api/clouds/${cloudId}`)
+    const json = (await res.json()) as GetCloudResult
+    return json
+  } catch {
+    return { ok: false, error: 'Nettverksfeil.' }
   }
 }

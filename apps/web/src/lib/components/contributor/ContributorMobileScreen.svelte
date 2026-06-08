@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import GlowOrb from '../ui/GlowOrb.svelte'
   import Eyebrow from '../ui/Eyebrow.svelte'
   import GradientText from '../ui/GradientText.svelte'
@@ -6,6 +7,7 @@
   import SuccessConfirmation from './SuccessConfirmation.svelte'
   import { mockSession as session } from '../../mocks/session'
   import { submitWords } from '../../services/word-api'
+  import { getCloud } from '../../services/cloud-api'
   import env from '../../config/env'
 
   interface Props {
@@ -17,10 +19,22 @@
   // Priority: route session id → env override → mock fallback
   const cloudId = sessionId || env.cloudId || session.id
 
+  let cloudTitle = $state(session.title)
+  let cloudPrompt = $state(session.prompt)
+
   let submitted = $state(false)
   let submittedWords = $state<string[]>([])
   let loading = $state(false)
   let error = $state<string | null>(null)
+
+  onMount(async () => {
+    if (!env.apiBaseUrl) return
+    const result = await getCloud(cloudId)
+    if (result.ok) {
+      cloudTitle = result.data.title
+      cloudPrompt = result.data.prompt ?? result.data.title
+    }
+  })
 
   async function handleSubmit(words: string[]) {
     loading = true
@@ -67,11 +81,11 @@
     <!-- Header -->
     <header class="flex flex-col gap-3 text-center">
       <Eyebrow accent>
-        <GradientText variant="playful">{session.title}</GradientText>
+        <GradientText variant="playful">{cloudTitle}</GradientText>
       </Eyebrow>
 
       <h1 class="text-2xl font-bold text-text leading-snug">
-        {session.prompt}
+        {cloudPrompt}
       </h1>
 
       {#if !submitted}

@@ -5,6 +5,16 @@ export type SubmitWordsResult =
   | { ok: true; accepted: string[] }
   | { ok: false; error: string }
 
+export type CloudWord = {
+  id: string
+  word: string
+  createdAt: string
+}
+
+export type GetWordsResult =
+  | { ok: true; data: CloudWord[] }
+  | { ok: false; error: string }
+
 /**
  * Submit words for a cloud.
  *
@@ -49,5 +59,25 @@ export async function submitWords(
     return { ok: true, accepted: accepted.length > 0 ? accepted : words }
   } catch {
     return { ok: false, error: 'Ugyldig svar fra server.' }
+  }
+}
+
+/**
+ * Fetch all words for a cloud.
+ *
+ * Falls back silently if apiBaseUrl is not configured.
+ */
+export async function getWords(cloudId: string): Promise<GetWordsResult> {
+  if (!env.apiBaseUrl) {
+    return { ok: false, error: 'No backend configured' }
+  }
+
+  try {
+    const res = await fetch(`${env.apiBaseUrl}/api/clouds/${cloudId}/words`)
+    const body = await res.json() as { ok: boolean; data: Array<{ id: string; word: string; createdAt: string }> }
+    if (!body.ok) return { ok: false, error: 'Failed to load words' }
+    return { ok: true, data: body.data.map((w) => ({ id: w.id, word: w.word, createdAt: w.createdAt })) }
+  } catch {
+    return { ok: false, error: 'Nettverksfeil.' }
   }
 }
